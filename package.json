@@ -1,0 +1,36 @@
+{
+  "name": "secretgoals",
+  "version": "1.0.0",
+  "description": "Anonimowa platforma śledzenia celów i nawyków",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "prisma:studio": "npm run prisma:studio --prefix server",
+    "prisma:push": "npm run prisma:push --prefix server",
+    "prisma:generate": "npm run prisma:generate --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmichno/SecretGoals.git"
+  },
+  "keywords": [
+    "secretgoals",
+    "react",
+    "vite",
+    "express",
+    "prisma",
+    "sqlite",
+    "tailwind"
+  ],
+  "bugs": {
+    "url": "https://github.com/lmichno/SecretGoals/issues"
+  },
+  "homepage": "https://github.com/lmichno/SecretGoals#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
