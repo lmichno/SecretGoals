@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecretGoals — Wersja Finałowa Beta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #040507; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .font-mono-num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="text-zinc-100 antialiased min-h-screen flex justify-center py-0 md:py-8 selection:bg-emerald-500 selection:text-black">
+
+  <!-- Mobile Shell (Google Pixel 7 ~412x915px) -->
+  <div class="w-full max-w-md mx-auto min-h-screen md:min-h-[890px] md:max-h-[890px] bg-[#090a0f] border-x border-white/[0.08] flex flex-col relative overflow-hidden md:rounded-3xl shadow-2xl">
+
+    <!-- Top Status Bar (09:41, 5G, Bateria) -->
+    <div class="pt-3.5 px-7 pb-2 flex justify-between items-center text-xs select-none flex-shrink-0 z-30 bg-[#090a0f]/95 backdrop-blur-md">
+      <span class="font-semibold text-zinc-200">09:41</span>
+      <div class="flex items-center gap-2">
+        <span class="text-[11px] font-mono-num text-zinc-300 font-medium">5G</span>
+        <div class="w-4 h-2.5 border border-zinc-400 rounded-2xs p-0.5 flex items-center">
+          <div class="h-full w-full bg-zinc-200 rounded-3xs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 1: GŁÓWNY EKRAN CELÓW (BETA) ================= -->
+    <div id="tab-goals" class="tab-view flex-1 flex flex-col overflow-hidden">
+      <!-- Header: Centrum Dyscypliny + Anon_Falcon92 + Dzień 18 -->
+      <header class="px-7 pt-3.5 pb-2.5 flex-shrink-0">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-zinc-400 block">Centrum dyscypliny</span>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"></span>
+              <span id="betaAliasHeader" class="text-xs font-mono-num text-zinc-200 font-semibold tracking-tight">● Anon_Falcon92</span>
+            </div>
+          </div>
+          <button class="text-xs font-mono-num font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/30 transition hover:bg-emerald-500/20">
+            Dzień 18
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto hide-scrollbar px-7 space-y-5 pb-24 pt-1">
+
+        <!-- KARTA GŁÓWNA: GŁÓWNY PRIORYTET P0 -->
+        <section class="bg-[#121319] border border-white/[0.08] hover:border-white/[0.12] rounded-2xl p-5 space-y-4 shadow-sm transition">
+          <!-- Nagłówek i Kategoria -->
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[11px] font-mono-num text-emerald-400 uppercase tracking-wider font-semibold">GŁÓWNY PRIORYTET P0</span>
+              <h1 class="text-lg font-bold text-white tracking-tight mt-0.5">Zero nikotyny & papierosów</h1>
+              <p class="text-xs text-zinc-300 font-medium mt-0.5">Nałóg</p>
+            </div>
+            <span class="text-xs font-mono-num font-semibold text-zinc-300 bg-zinc-800/80 px-2.5 py-1 rounded-md border border-white/[0.08]">
+              P0
+            </span>
+          </div>
+
+          <!-- Liczniki oraz Pasek Postępu (85%) -->
+          <div class="space-y-2 pt-1">
+            <div class="flex justify-between text-xs font-mono-num font-medium">
+              <span class="text-zinc-300">432h wolności</span>
+              <span class="text-zinc-100 font-semibold">18 / 21 dni do kamienia milowego</span>
+            </div>
+            <div class="w-full h-2 bg-zinc-800/90 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 85.7%;"></div>
+            </div>
+            <p class="text-xs text-zinc-300 leading-relaxed pt-0.5">
+              Za 3 dni (Dzień 21) wygeneruje się automatyczny post w feedzie z podsumowaniem Twojej drogi.
+            </p>
+          </div>
+
+          <!-- Sekcja Ostatni Meldunek (Z ikoną ołówka w prawym górnym rogu) -->
+          <div onclick="openBetaNoteModal()" class="group bg-[#090a0f] hover:bg-[#0d0e16] border border-white/[0.10] hover:border-emerald-500/40 rounded-xl p-3.5 space-y-2 cursor-pointer transition relative">
+            <div class="flex justify-between items-center text-xs">
+              <div class="flex items-center gap-1.5">
+                <span class="font-semibold text-zinc-200">Ostatni meldunek:</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono-num text-zinc-400" id="betaNoteTime">08:15 rano</span>
+                <!-- Subtelna ikona edycji (ołówka) -->
+                <svg class="w-3.5 h-3.5 text-zinc-400 group-hover:text-emerald-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+              </div>
+            </div>
+            <p id="betaNoteDisplay" class="text-xs text-zinc-200 leading-relaxed italic">
+              „Przetrwałem poranny impuls przy kawie. Zimna woda i 10 głębokich oddechów załatwiły sprawę.”
+            </p>
+          </div>
+
+          <!-- Linijka Wsparcia Społeczności -->
+          <div class="pt-0.5 flex items-center justify-between text-xs text-zinc-300">
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 text-sm">💚</span>
+              <span class="font-medium text-zinc-200">42 osoby trzymają kciuki w Twoim wątku</span>
+            </div>
+            <span class="text-[11px] font-mono-num text-zinc-300 bg-zinc-800/80 px-2 py-0.5 rounded border border-white/[0.08]">
+              Zero-PII
+            </span>
+          </div>
+
+          <!-- Duży, biały przycisk (kontrastowy z czarnym tekstem) -->
+          <button id="betaMainCheckin" onclick="completeBetaMainCheckin()" class="w-full py-3 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 text-xs font-bold transition shadow-sm active:scale-[0.99] flex items-center justify-center gap-2">
+            <span class="text-sm">✓</span> <span>Zamelduj Dzień 18 bez nikotyny</span>
+          </button>
+        </section>
+
+        <!-- SEKCJA ZADANIA OPERACYJNE NA DZIŚ -->
+        <section class="space-y-3">
+          <div class="flex justify-between items-center">
+            <h2 class="text-xs font-semibold tracking-wider uppercase text-zinc-400">Zadania operacyjne na dziś</h2>
+            <span class="text-xs font-mono-num text-zinc-400">Szybkie akcje</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <!-- Zadanie 1: KARIERA (+1 Wysłane CV) -->
+            <div class="bg-[#121319] border border-white/[0.08] hover:border-white/[0.12] rounded-xl p-3.5 flex items-center justify-between gap-3 text-xs transition">
+              <div class="min-w-0 flex-1">
+                <span class="text-[10px] font-mono-num text-emerald-400 font-semibold uppercase tracking-wider block">KARIERA</span>
+                <p class="font-medium text-zinc-200 mt-0.5">
+                  Wysyłanie CV: <span id="cvCountText" class="text-emerald-400 font-mono-num font-bold">1 / 3 wysłane</span>
+                </p>
+                <div class="w-36 h-1.5 bg-zinc-800 rounded-full overflow-hidden mt-2">
+                  <div id="cvBar" class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: 33.3%;"></div>
+                </div>
+              </div>
+              <button onclick="incrementCV()" class="px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-semibold text-xs font-mono-num border border-white/[0.08] transition active:scale-95 shadow-sm flex-shrink-0">
+                +1 Wysłane CV
+              </button>
+            </div>
+
+            <!-- Zadanie 2: FINANSE (Checkbox + Limit) -->
+            <div class="bg-[#121319] border border-white/[0.08] hover:border-white/[0.12] rounded-xl p-3.5 flex items-center justify-between gap-3 text-xs transition">
+              <div class="flex items-center gap-3 min-w-0">
+                <button onclick="toggleBetaBudget(this)" class="w-6 h-6 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center text-xs font-bold transition flex-shrink-0 shadow-sm cursor-pointer" title="Kliknij, aby odznaczyć/zaznaczyć">
+                  ✓
+                </button>
+                <div class="min-w-0">
+                  <span class="text-[10px] font-mono-num text-emerald-400 font-semibold uppercase tracking-wider block">FINANSE</span>
+                  <p class="font-semibold text-zinc-100 mt-0.5">Dzienny limit wydatków (&lt; 50 zł)</p>
+                  <p class="text-xs text-zinc-300 font-mono-num mt-0.5">Spłacono 3 200 / 8 000 zł długu</p>
+                </div>
+              </div>
+              <span id="budgetStatusTag" class="text-xs font-mono-num font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 flex-shrink-0">
+                Zachowane
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEKCJA RÓWIEŚNIK Z TYM SAMYM CELEM -->
+        <section class="space-y-2.5">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-semibold tracking-wider uppercase text-zinc-400">Rówieśnik z tym samym celem</h3>
+            <span class="text-xs font-mono-num text-zinc-400">Echo</span>
+          </div>
+
+          <div class="bg-[#121319] border border-white/[0.08] hover:border-white/[0.12] rounded-xl p-3.5 flex justify-between items-center gap-3 text-xs transition">
+            <div class="min-w-0 flex-1">
+              <span class="font-semibold text-zinc-200 block">Anon_Sparrow24 (Dzień 18)</span>
+              <p class="text-xs text-zinc-300 italic mt-0.5 leading-relaxed">„Ciężko o 14:00, ale kawa bez papierosa zaliczona.”</p>
+            </div>
+            <button onclick="sendBetaSupport(this)" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white font-mono-num text-xs font-medium border border-white/[0.08] transition active:scale-95 flex-shrink-0">
+              Wspieram ♥
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ================= TAB 2: SPOŁECZNOŚĆ (ROLKI PIONOWE REELS) ================= -->
+    <div id="tab-community" class="tab-view flex-1 flex flex-col overflow-hidden hidden">
+      <header class="px-7 pt-4 pb-3 flex-shrink-0 border-b border-white/[0.08]">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-base font-bold text-zinc-100 tracking-tight">Feed Społeczności</h1>
+            <p class="text-xs text-zinc-300 mt-0.5">Rolki doświadczeń, kamieni milowych i porad weteranów</p>
+          </div>
+          <span class="text-xs font-mono-num text-zinc-400">Zero-PII</span>
+        </div>
+
+        <!-- Filtry kategorii -->
+        <div class="mt-3 flex gap-1.5 overflow-x-auto hide-scrollbar">
+          <button class="px-3 py-1 rounded-lg bg-zinc-800 text-zinc-100 text-xs font-semibold border border-white/[0.08]">Wszystkie</button>
+          <button class="px-3 py-1 rounded-lg bg-[#121319] text-zinc-300 hover:text-white text-xs border border-white/[0.06] transition">Kamienie milowe</button>
+          <button class="px-3 py-1 rounded-lg bg-[#121319] text-zinc-300 hover:text-white text-xs border border-white/[0.06] transition">Poradniki</button>
+          <button class="px-3 py-1 rounded-lg bg-[#121319] text-zinc-300 hover:text-white text-xs border border-white/[0.06] transition">Meldunki na żywo</button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto hide-scrollbar px-7 space-y-4 pb-24 pt-3">
+        <!-- Rolka 1: Kamień milowy 365 Dni -->
+        <article class="bg-[#121319] border border-white/[0.08] rounded-2xl p-5 space-y-3 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-mono-num text-xs text-emerald-400 font-bold">
+                AP
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-zinc-100">Anon_Phoenix01</span>
+                  <span class="text-[10px] font-mono-num text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">Kamień: 365 Dni</span>
+                </div>
+                <span class="text-xs text-zinc-300 font-medium block mt-0.5">Cel: Całkowita abstynencja alkoholowa</span>
+              </div>
+            </div>
+            <span class="text-xs font-mono-num text-zinc-400">Dzisiaj</span>
+          </div>
+
+          <p class="text-xs text-zinc-200 leading-relaxed">
+            Rok temu nie wierzyłem, że dożyję kolejnych urodzin. Dziś po 365 dniach mam nową pracę, biegam 10 km tygodniowo i odzyskałem relacje. Trzymajcie się na początku — to jedyna droga do odzyskania siebie.
+          </p>
+
+          <div class="pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono-num text-zinc-300">
+            <button onclick="likeBetaReel(this)" class="hover:text-emerald-400 transition flex items-center gap-1.5 py-1 px-2 rounded-md hover:bg-zinc-800">
+              <span class="text-emerald-400">♥</span> <span>Pogratuluj:</span> <span class="count font-bold text-zinc-100">142</span>
+            </button>
+            <span class="text-zinc-300">24 dyskusje</span>
+          </div>
+        </article>
+
+        <!-- Rolka 2: Poradnik oddłużeniowy -->
+        <article class="bg-[#121319] border border-white/[0.08] rounded-2xl p-5 space-y-3 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-white/[0.08] flex items-center justify-center font-mono-num text-xs text-zinc-200 font-bold">
+                GH
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-zinc-100">Ghost_Hawk</span>
+                  <span class="text-[10px] font-mono-num text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded border border-white/[0.06]">Poradnik</span>
+                </div>
+                <span class="text-xs text-zinc-300 font-medium block mt-0.5">Cel: Spłacono 52 000 zł długu</span>
+              </div>
+            </div>
+            <span class="text-xs font-mono-num text-zinc-400">3h temu</span>
+          </div>
+
+          <div class="bg-[#090a0f] border border-white/[0.06] rounded-xl p-3 text-xs text-zinc-200 leading-relaxed space-y-1">
+            <p class="font-semibold text-zinc-100">Patent na spłacanie (metoda kuli śnieżnej):</p>
+            <p class="text-zinc-300">Nie rzucaj się na wszystkie kredyty naraz. Spłać najmniejszy dług w 2 miesiące, by poczuć psychologiczne zwycięstwo i uwolnić miesięczną ratę.</p>
+          </div>
+
+          <div class="pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono-num text-zinc-300">
+            <button onclick="likeBetaReel(this)" class="hover:text-emerald-400 transition flex items-center gap-1.5 py-1 px-2 rounded-md hover:bg-zinc-800">
+              <span class="text-emerald-400">♥</span> <span>Pomocne:</span> <span class="count font-bold text-zinc-100">78</span>
+            </button>
+            <span class="text-zinc-300">9 zapisów</span>
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <!-- ================= TAB 3: WSPARCIE, MEGAKOŁO & SOS ================= -->
+    <div id="tab-sos" class="tab-view flex-1 flex flex-col overflow-hidden hidden">
+      <header class="px-7 pt-4 pb-3 flex-shrink-0 border-b border-white/[0.08]">
+        <h1 class="text-base font-bold text-zinc-100 tracking-tight">Wsparcie & Megakoło</h1>
+        <p class="text-xs text-zinc-300 mt-0.5">Grupa 1 240 osób oraz narzędzia przetrwania kryzysu</p>
+      </header>
+
+      <main class="flex-1 overflow-y-auto hide-scrollbar px-7 space-y-5 pb-24 pt-4">
+
+        <!-- KOŁO SYSTEMOWE (Megakoło 1240 osób) -->
+        <section class="bg-[#121319] border border-white/[0.08] rounded-2xl p-4 space-y-3">
+          <div class="flex justify-between items-baseline">
+            <span class="text-[10px] font-mono-num text-zinc-400 uppercase font-semibold">Koło systemowe</span>
+            <span class="text-xs font-mono-num font-semibold text-emerald-400">Dołączono automatycznie</span>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-zinc-100">Koło Społeczności: Wolni od Tytoniu</h2>
+            <p class="text-xs text-zinc-300 mt-0.5">1 240 osób zmagających się z rzucaniem palenia.</p>
+          </div>
+          <div class="bg-[#090a0f] p-3 rounded-xl border border-white/[0.06] flex justify-between items-center text-xs">
+            <span class="text-zinc-300 font-medium">Wytrwałość całej grupy dziś:</span>
+            <span class="font-mono-num text-emerald-400 font-bold text-sm">89.2% czystości</span>
+          </div>
+          <button onclick="alert('Zameldowano obecność w Megakole!')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-semibold border border-white/[0.08] transition active:scale-[0.99]">
+            Zamelduj obecność w Kole ✓
+          </button>
+        </section>
+
+        <!-- 3-MINUTOWY ODDECH SOS -->
+        <section class="bg-[#121319] border border-white/[0.08] rounded-2xl p-5 text-center space-y-3">
+          <span class="text-[10px] font-mono-num uppercase font-semibold text-zinc-400">Stoper Pokusy</span>
+          <h3 class="text-sm font-bold text-zinc-100">3 Minuty Oddechu Pudełkowego</h3>
+          <p class="text-xs text-zinc-300 max-w-xs mx-auto leading-relaxed">
+            Głód nikotynowy to fala chemiczna trwająca 3-5 minut. Głęboki oddech resetuje poziom kortyzolu.
+          </p>
+          <div class="my-3 w-16 h-16 rounded-full border-2 border-emerald-500/40 mx-auto flex items-center justify-center font-mono-num text-xs font-bold text-emerald-400 bg-emerald-500/5">
+            4s • 4s
+          </div>
+          <button onclick="alert('Uruchomiono sesję oddechową: Wdech (4s) - Pauza (4s) - Wydech (4s) - Pauza (4s)')" class="w-full py-2.5 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 text-xs font-bold transition shadow-sm active:scale-[0.99]">
+            Rozpocznij stoper wyciszenia
+          </button>
+        </section>
+
+        <!-- STRATEGIE RADZENIA SOBIE -->
+        <section class="space-y-2.5 text-xs">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Sprawdzone strategie kryzysowe</h3>
+          <div class="bg-[#121319] border border-white/[0.08] rounded-xl p-3.5 text-zinc-200 space-y-1">
+            <p class="font-semibold text-zinc-100">1. Szklanka lodowatej wody:</p>
+            <p class="text-zinc-300 leading-relaxed">Nagła zmiana temperatury w jamie ustnej natychmiast wycisza odruch sięgnięcia po dym i aktywuje nerw błędny.</p>
+          </div>
+          <div class="bg-[#121319] border border-white/[0.08] rounded-xl p-3.5 text-zinc-200 space-y-1">
+            <p class="font-semibold text-zinc-100">2. Zasada opóźnienia 10 minut:</p>
+            <p class="text-zinc-300 leading-relaxed">Powiedz sobie: „Mogę zapalić, ale za 10 minut”. W 90% przypadków po 10 minutach intensywność fali spada o połowę.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ================= TAB 4: KONTO, STATYSTYKI & USTAWIENIA ================= -->
+    <div id="tab-profile" class="tab-view flex-1 flex flex-col overflow-hidden hidden">
+      <header class="px-7 pt-4 pb-3 flex-shrink-0 border-b border-white/[0.08]">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-base font-bold text-zinc-100 tracking-tight">Konto & Ustawienia</h1>
+            <p class="text-xs text-zinc-300 mt-0.5">Zarządzanie tożsamością i telemetria celów</p>
+          </div>
+          <span class="text-xs font-mono-num text-zinc-400">Zero-PII</span>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto hide-scrollbar px-7 space-y-5 pb-24 pt-4">
+
+        <!-- ZARZĄDZANIE TOŻSAMOŚCIĄ -->
+        <section class="bg-[#121319] border border-white/[0.08] rounded-2xl p-4 space-y-3">
+          <div class="flex justify-between items-baseline">
+            <span class="text-[10px] font-mono-num text-zinc-400 uppercase font-semibold">Anonimowa Tożsamość</span>
+            <button onclick="randomizeBetaAlias()" class="text-xs font-mono-num font-semibold text-zinc-200 hover:text-white underline">
+              Losuj nowy alias
+            </button>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-bold font-mono-num text-zinc-100" id="betaAliasDisplay">Anon_Falcon92</p>
+              <span class="text-xs text-zinc-300 block mt-0.5">Zero-PII: Brak imion, e-maili i numerów telefonu.</span>
+            </div>
+            <span class="text-xs font-mono-num font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/30">
+              Aktywny
+            </span>
+          </div>
+        </section>
+
+        <!-- TELEMETRIA ZYSKÓW (ROI) -->
+        <section class="grid grid-cols-2 gap-3">
+          <div class="bg-[#121319] border border-white/[0.08] rounded-xl p-3.5">
+            <span class="text-[10px] text-zinc-400 font-mono-num font-semibold block uppercase">Oszczędności</span>
+            <span class="text-xl font-bold font-mono-num text-emerald-400 mt-1 block">+360 zł</span>
+            <p class="text-xs text-zinc-300 mt-0.5">18 dni bez tytoniu</p>
+          </div>
+          <div class="bg-[#121319] border border-white/[0.08] rounded-xl p-3.5">
+            <span class="text-[10px] text-zinc-400 font-mono-num font-semibold block uppercase">Odzyskany czas</span>
+            <span class="text-xl font-bold font-mono-num text-zinc-100 mt-1 block">18.5 godz.</span>
+            <p class="text-xs text-zinc-300 mt-0.5">Z przerw na palenie</p>
+          </div>
+        </section>
+
+        <!-- USTAWIENIA SYSTEMOWE -->
+        <section class="bg-[#121319] border border-white/[0.08] rounded-2xl p-4 space-y-3 text-xs">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Ustawienia systemowe</h3>
+          <div class="flex justify-between items-center py-1.5">
+            <span class="text-zinc-200 font-medium">Powiadomienie o check-inie o 20:00</span>
+            <input type="checkbox" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
+          </div>
+          <div class="flex justify-between items-center py-1.5 border-t border-white/[0.06]">
+            <span class="text-zinc-200 font-medium">Pokaż moje kamienie milowe w feedzie</span>
+            <input type="checkbox" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
+          </div>
+          <div class="pt-2 border-t border-white/[0.06] flex justify-between items-center">
+            <button onclick="alert('Wygenerowano i pobrano kopię zapasową JSON.')" class="text-zinc-300 hover:text-white underline font-medium">
+              Kopia lokalna JSON
+            </button>
+            <button onclick="alert('Zresetowano ustawienia sesji.')" class="text-rose-400 hover:text-rose-300 font-medium">
+              Reset profilu
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ================= DOLNA BELKA (TAB BAR - 4 PRZYCISKI) ================= -->
+    <nav class="absolute bottom-0 left-0 right-0 h-16 bg-[#090a0f] border-t border-white/[0.08] px-6 flex items-center justify-between z-30 flex-shrink-0">
+      <!-- 1. Cele (zaznaczone ptaszkiem) -->
+      <button onclick="switchBetaTab('goals')" id="bnav-goals" class="bnav-btn text-white flex flex-col items-center gap-1 font-semibold transition">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span class="text-[10px]">Cele</span>
+      </button>
+
+      <!-- 2. Społeczność -->
+      <button onclick="switchBetaTab('community')" id="bnav-community" class="bnav-btn text-zinc-400 hover:text-zinc-200 flex flex-col items-center gap-1 font-medium transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+        </svg>
+        <span class="text-[10px]">Społeczność</span>
+      </button>
+
+      <!-- 3. Wsparcie -->
+      <button onclick="switchBetaTab('sos')" id="bnav-sos" class="bnav-btn text-zinc-400 hover:text-zinc-200 flex flex-col items-center gap-1 font-medium transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        </svg>
+        <span class="text-[10px]">Wsparcie</span>
+      </button>
+
+      <!-- 4. Profil -->
+      <button onclick="switchBetaTab('profile')" id="bnav-profile" class="bnav-btn text-zinc-400 hover:text-zinc-200 flex flex-col items-center gap-1 font-medium transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+        </svg>
+        <span class="text-[10px]">Profil</span>
+      </button>
+    </nav>
+
+    <!-- Modal: Edycja Meldunku w Beta -->
+    <div id="betaNoteModal" class="hidden absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+      <div class="w-full bg-[#121319] border border-white/[0.12] rounded-2xl p-5 space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-bold text-zinc-100">Edytuj meldunek w wątku</span>
+          <button onclick="document.getElementById('betaNoteModal').classList.add('hidden')" class="text-zinc-400 hover:text-white p-1">✕</button>
+        </div>
+        <textarea id="betaNoteInput" rows="3" class="w-full bg-[#090a0f] border border-white/[0.10] rounded-xl p-3 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 resize-none font-sans"></textarea>
+        <div class="flex justify-end gap-2">
+          <button onclick="document.getElementById('betaNoteModal').classList.add('hidden')" class="px-3.5 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-semibold hover:bg-zinc-700 transition">Anuluj</button>
+          <button onclick="saveBetaNoteUpdate()" class="px-4 py-2 rounded-xl bg-white text-zinc-950 text-xs font-bold hover:bg-zinc-100 transition shadow-sm">Zapisz zmianę</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let cvCount = 1;
+    let budgetSaved = true;
+
+    function switchBetaTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.bnav-btn').forEach(btn => {
+        btn.classList.remove('text-white');
+        btn.classList.add('text-zinc-400');
+        const icon = btn.querySelector('svg');
+        if (icon) icon.classList.remove('text-emerald-400');
+      });
+      const activeBtn = document.getElementById(`bnav-${tabId}`);
+      activeBtn.classList.add('text-white');
+      activeBtn.classList.remove('text-zinc-400');
+      const activeIcon = activeBtn.querySelector('svg');
+      if (activeIcon) activeIcon.classList.add('text-emerald-400');
+    }
+
+    function completeBetaMainCheckin() {
+      const btn = document.getElementById('betaMainCheckin');
+      btn.innerHTML = '<span>✓</span> Dzień 18 pomyślnie zaliczony!';
+      btn.disabled = true;
+      btn.className = 'w-full py-3 rounded-xl bg-zinc-800 text-zinc-400 text-xs font-bold transition cursor-not-allowed flex items-center justify-center gap-2';
+      alert('Gratulacje! Zaliczyłeś Dzień 18 wolności od nikotyny. Twój postęp i wątek w feedzie zostały zaktualizowane.');
+    }
+
+    function incrementCV() {
+      if (cvCount < 3) {
+        cvCount++;
+        document.getElementById('cvCountText').textContent = `${cvCount} / 3 wysłane`;
+        document.getElementById('cvBar').style.width = `${Math.round((cvCount / 3) * 100)}%`;
+        alert(`Zarejestrowano kolejne CV! Postęp: ${cvCount} / 3 na dziś.`);
+      } else {
+        alert('Świetnie! Komplet 3/3 wysłanych CV na dziś osiągnięty!');
+      }
+    }
+
+    function toggleBetaBudget(btn) {
+      budgetSaved = !budgetSaved;
+      const statusTag = document.getElementById('budgetStatusTag');
+      if (budgetSaved) {
+        btn.className = "w-6 h-6 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center text-xs font-bold transition flex-shrink-0 shadow-sm cursor-pointer";
+        btn.textContent = "✓";
+        statusTag.textContent = "Zachowane";
+        statusTag.className = "text-xs font-mono-num font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 flex-shrink-0";
+      } else {
+        btn.className = "w-6 h-6 rounded-lg bg-zinc-800 text-transparent border border-zinc-600 flex items-center justify-center text-xs font-bold transition flex-shrink-0 cursor-pointer";
+        btn.textContent = "";
+        statusTag.textContent = "Przekroczone";
+        statusTag.className = "text-xs font-mono-num font-medium text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20 flex-shrink-0";
+      }
+    }
+
+    function openBetaNoteModal() {
+      const cur = document.getElementById('betaNoteDisplay').textContent.replace(/^[„"]|[”"]$/g, '').trim();
+      document.getElementById('betaNoteInput').value = cur;
+      document.getElementById('betaNoteModal').classList.remove('hidden');
+      document.getElementById('betaNoteInput').focus();
+    }
+
+    function saveBetaNoteUpdate() {
+      const txt = document.getElementById('betaNoteInput').value;
+      if (txt.trim()) {
+        document.getElementById('betaNoteDisplay').textContent = `„${txt}”`;
+        document.getElementById('betaNoteTime').textContent = 'Przed chwilą';
+        document.getElementById('betaNoteModal').classList.add('hidden');
+      }
+    }
+
+    function sendBetaSupport(btn) {
+      btn.textContent = 'Wysłano ♥';
+      btn.disabled = true;
+      btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-mono-num text-xs font-semibold border border-emerald-500/20 transition cursor-default flex-shrink-0';
+    }
+
+    function likeBetaReel(btn) {
+      const c = btn.querySelector('.count');
+      let val = parseInt(c.textContent, 10);
+      c.textContent = val + 1;
+      btn.classList.add('text-emerald-400');
+    }
+
+    function randomizeBetaAlias() {
+      const names = ['Anon_Wolf44', 'Shadow_Pine88', 'Silent_Hawk12', 'Brave_Echo99', 'Steel_Falcon22'];
+      const pick = names[Math.floor(Math.random() * names.length)];
+      document.getElementById('betaAliasHeader').textContent = `● ${pick}`;
+      document.getElementById('betaAliasDisplay').textContent = pick;
+      alert(`Wylosowano nowy, anonimowy alias: ${pick}`);
+    }
+  </script>
+</body>
+</html>
