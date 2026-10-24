@@ -46,15 +46,21 @@ function App() {
             <ul className="text-sm text-slate-300 space-y-1.5">
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span><strong>Frontend:</strong> React + Vite + Tailwind CSS</span>
+                <span>
+                  <strong>Frontend:</strong> React + Vite + Tailwind CSS
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-                <span><strong>Backend:</strong> Express.js</span>
+                <span>
+                  <strong>Backend:</strong> Express.js
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-indigo-400"></span>
-                <span><strong>Baza danych:</strong> SQLite + Prisma ORM</span>
+                <span>
+                  <strong>Baza danych:</strong> SQLite + Prisma ORM
+                </span>
               </li>
             </ul>
           </div>
@@ -65,7 +71,9 @@ function App() {
               Status połączenia z API (/api/health)
             </h2>
             {loading ? (
-              <p className="text-sm text-slate-400 animate-pulse">Sprawdzanie połączenia z serwerem...</p>
+              <p className="text-sm text-slate-400 animate-pulse">
+                Sprawdzanie połączenia z serwerem...
+              </p>
             ) : serverStatus?.status === 'ok' ? (
               <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium">
                 <CheckCircle2 className="w-4 h-4" />
