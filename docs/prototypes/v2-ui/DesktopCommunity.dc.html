@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Społeczność – desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1115}
+a{color:#8BE5B8}a:hover{color:#B9F0D2}
+.sg-feed::-webkit-scrollbar{display:none}
+.sg-feed{scrollbar-width:none}
+</style>
+</helmet>
+<div style="min-height: 980px; box-sizing: border-box; background: #0F1115; color: #F3F1EC; font-family: Inter, system-ui, sans-serif; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; max-width: 100%; box-sizing: border-box; padding: 28px 20px; border-right: 1px solid #2C313A; display: flex; flex-direction: column; gap: 28px; background: #12151A">
+    <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.01em">Secret Goals</span>
+    <nav aria-label="Główna nawigacja" style="display: flex; flex-direction: column; gap: 4px">
+      <a href="DesktopGoals.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #C9CED8; text-decoration: none; font-weight: 500; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        <span>Cele</span>
+      </a>
+      <a href="DesktopCommunity.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; background: #13291F; color: #5BD69B; text-decoration: none; font-weight: 600; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Społeczność</span>
+      </a>
+      <a href="DesktopProfile.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #C9CED8; text-decoration: none; font-weight: 500; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Profil</span>
+      </a>
+    </nav>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #A3A9B5; padding: 0 12px">Feed</span>
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+        <button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 0 clamp(16px, 4vw, 48px)">
+    <div class="sg-feed" onScroll="{{onScroll}}" style="height: 980px; overflow-y: auto; scroll-snap-type: y mandatory">
+      <sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+        <div style="height: 980px; box-sizing: border-box; padding: 40px 0; scroll-snap-align: start; display: flex; justify-content: center; align-items: flex-end; gap: 16px">
+          <article style="{{it.cardStyle}}">
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <span style="align-self: flex-start; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; background: rgba(0,0,0,0.3)">{{it.tag}}</span>
+              <sc-if value="{{it.hasBig}}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; align-items: baseline; gap: 10px">
+                  <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 120px; line-height: 0.9; font-weight: 800; letter-spacing: -0.03em">{{it.big}}</span>
+                  <span style="font-size: 20px; color: #DAD7D0">{{it.bigUnit}}</span>
+                </div>
+              </sc-if>
+              <h2 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 32px; line-height: 1.12; font-weight: 700">{{it.title}}</h2>
+              <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #DAD7D0">{{it.body}}</p>
+              <sc-if value="{{it.hasSteps}}" hint-placeholder-val="{{ false }}">
+                <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+                  <sc-for list="{{it.steps}}" as="st" hint-placeholder-count="3">
+                    <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 16px; line-height: 1.45">
+                      <span style="flex-shrink: 0; width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">{{st.n}}</span>
+                      <span>{{st.text}}</span>
+                    </li>
+                  </sc-for>
+                </ol>
+              </sc-if>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px">
+                <div style="width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700">{{it.initials}}</div>
+                <div style="display: flex; flex-direction: column">
+                  <span style="font-size: 16px; font-weight: 600">{{it.alias}}</span>
+                  <span style="font-size: 13px; color: #C9CED8">{{it.meta}}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center; padding-bottom: 24px">
+            <button onClick="{{it.toggle}}" aria-label="Wspieram" style="{{it.supportStyle}}">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="{{it.heartFill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+            </button>
+            <span style="font-size: 13px; font-weight: 600; margin-bottom: 8px">{{it.supportCount}}</span>
+            <button aria-label="Komentarze" style="width: 56px; height: 56px; border-radius: 18px; border: 1px solid #2C313A; background: #181B21; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+            </button>
+            <span style="font-size: 13px; font-weight: 600; margin-bottom: 8px">{{it.comments}}</span>
+            <button aria-label="Zapisz" style="width: 56px; height: 56px; border-radius: 18px; border: 1px solid #2C313A; background: #181B21; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            </button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+
+  <aside aria-label="Komentarze" style="flex: 1 1 320px; max-width: 100%; box-sizing: border-box; padding: 32px 24px; border-left: 1px solid #2C313A; display: flex; flex-direction: column; gap: 16px">
+    <h2 style="margin: 0; font-size: 17px; font-weight: 600">Komentarze · {{cur.comments}}</h2>
+    <span style="font-size: 13px; color: #A3A9B5; margin-top: -8px">do wpisu: {{cur.title}}</span>
+    <sc-for list="{{cur.thread}}" as="m" hint-placeholder-count="3">
+      <div style="display: flex; gap: 10px; align-items: flex-start">
+        <div style="width: 34px; height: 34px; border-radius: 11px; background: #233049; color: #8AB4FF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{m.initials}}</div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; color: #A3A9B5">{{m.alias}}</span>
+          <span style="font-size: 14px; line-height: 1.45">{{m.text}}</span>
+        </div>
+      </div>
+    </sc-for>
+    <label for="sg-comment" style="font-size: 13px; color: #A3A9B5; margin-top: 8px">Twój komentarz jako Anon_Falcon92</label>
+    <div style="display: flex; gap: 8px">
+      <input id="sg-comment" type="text" placeholder="Napisz coś wspierającego" style="flex: 1; min-width: 0; height: 44px; border-radius: 12px; border: 1px solid #2C313A; background: #181B21; color: #F3F1EC; font: inherit; font-size: 14px; padding: 0 12px">
+      <button aria-label="Wyślij komentarz" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: #5BD69B; color: #06180F; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+      </button>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'all', idx: 0, supported: {} };
+  }
+  renderVals() {
+    const s = this.state;
+    const all = [
+      {
+        id: 'm1', type: 'milestone', bg: '#173527', tag: 'Kamień milowy · Alkohol', hasBig: true, big: '365', bigUnit: 'dni',
+        title: 'Rok bez alkoholu',
+        body: 'Pierwsze dwa tygodnie były najgorsze fizycznie. Jeśli jesteś na początku: to mija, a jasność głowy wraca szybciej, niż myślisz.',
+        initials: 'AP', alias: 'Anon_Phoenix01', meta: 'automatyczny post · 15 min temu', support: 142, comments: 24,
+        thread: [
+          { initials: 'AF', alias: 'Anon_Falcon92 (Ty) · 10 min temu', text: 'Ogromny szacunek. Daje mi to motywację na mój dzień 18.' },
+          { initials: 'SL', alias: 'Shadow_Lynx · 12 min temu', text: 'Gratulacje! Co pomagało Ci najbardziej w pierwszym miesiącu?' },
+          { initials: 'NF', alias: 'Night_Falcon55 · 14 min temu', text: 'Zapisuję ten post na gorsze dni.' }
+        ]
+      },
+      {
+        id: 'g1', type: 'guide', bg: '#16273D', tag: 'Poradnik · Finanse', title: 'Zasada 48 godzin przy impulsywnych zakupach',
+        body: 'Tak spłaciłem 12 000 zł bez poczucia, że sobie wszystkiego odmawiam.', hasSteps: true,
+        steps: [
+          { n: '1', text: 'Dodaj rzecz do koszyka i zamknij kartę na dwa dni.' },
+          { n: '2', text: 'Po 48 godzinach zapytaj siebie, czy nadal tego chcesz.' },
+          { n: '3', text: 'Kwotę, której nie wydałeś, od razu przelej na ratę.' }
+        ],
+        initials: 'SL', alias: 'Shadow_Lynx', meta: 'cel: spłata długu · 2 godz. temu', support: 89, comments: 11,
+        thread: [{ initials: 'BC', alias: 'Brave_Cedar40 · godz. temu', text: 'Działa! Dwa razy w tym miesiącu odpuściłem zakup.' }]
+      },
+      {
+        id: 'c1', type: 'checkin', bg: '#2B2238', tag: 'Meldunek · Dzień 18', title: '„Kawa bez papierosa zaliczona.”',
+        body: 'Ciężko było ok. 14:00. Zimna woda i 10 głębokich oddechów załatwiły sprawę.',
+        initials: 'AS', alias: 'Anon_Sparrow24', meta: 'cel: zero nikotyny · 40 min temu', support: 31, comments: 4,
+        thread: [{ initials: 'AF', alias: 'Anon_Falcon92 (Ty) · 30 min temu', text: 'Też dzień 18! Idziemy razem.' }]
+      },
+      {
+        id: 'n1', type: 'goal', bg: '#33261B', tag: 'Nowy cel · Sport', title: 'Bieganie 3 razy w tygodniu',
+        body: 'Zaczynam od zera, po kontuzji kolana. Pierwszy tydzień: 3 × 20 minut marszobiegu.',
+        initials: 'NF', alias: 'Night_Falcon55', meta: 'cel jako post · wczoraj', support: 12, comments: 2,
+        thread: [{ initials: 'GH', alias: 'Ghost_Hawk · wczoraj', text: 'Powodzenia! Marszobieg to świetny start.' }]
+      }
+    ];
+    const filter = { all: () => true, similar: (x) => x.id !== 'g1', milestone: (x) => x.type === 'milestone', guide: (x) => x.type === 'guide' }[s.tab];
+    const list = all.filter(filter);
+    const idx = Math.min(s.idx, list.length - 1);
+    const items = list.map((x) => {
+      const on = !!s.supported[x.id];
+      return {
+        ...x,
+        hasBig: !!x.hasBig, hasSteps: !!x.hasSteps,
+        cardStyle: 'width: min(100%, 480px); height: 900px; box-sizing: border-box; border-radius: 28px; padding: 40px 32px; display: flex; flex-direction: column; justify-content: flex-end; background: ' + x.bg,
+        toggle: () => this.setState({ supported: { ...s.supported, [x.id]: !on } }),
+        supportCount: String(x.support + (on ? 1 : 0)),
+        heartFill: on ? 'currentColor' : 'none',
+        supportStyle: 'width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; ' + (on ? 'border: none; background: #8AB4FF; color: #0B1626' : 'border: 1px solid #2C313A; background: #181B21; color: #F3F1EC')
+      };
+    });
+    const tabDefs = [
+      { id: 'all', label: 'Dla Ciebie' }, { id: 'similar', label: 'Podobne cele' },
+      { id: 'milestone', label: 'Kamienie milowe' }, { id: 'guide', label: 'Poradniki' }
+    ];
+    return {
+      items,
+      cur: list[idx],
+      onScroll: (e) => {
+        const i = Math.round(e.currentTarget.scrollTop / 980);
+        if (i !== this.state.idx) this.setState({ idx: i });
+      },
+      tabs: tabDefs.map((t) => ({
+        ...t,
+        pick: () => this.setState({ tab: t.id, idx: 0 }),
+        style: 'height: 40px; padding: 0 12px; border-radius: 12px; border: none; text-align: left; font: inherit; font-size: 14px; cursor: pointer; ' + (t.id === s.tab ? 'background: #22262E; color: #F3F1EC; font-weight: 600' : 'background: transparent; color: #A3A9B5; font-weight: 500')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

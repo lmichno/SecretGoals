@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Cele – desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1115}
+a{color:#8BE5B8}a:hover{color:#B9F0D2}
+</style>
+</helmet>
+<div style="min-height: 980px; box-sizing: border-box; background: #0F1115; color: #F3F1EC; font-family: Inter, system-ui, sans-serif; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; max-width: 100%; box-sizing: border-box; padding: 28px 20px; border-right: 1px solid #2C313A; display: flex; flex-direction: column; gap: 28px; background: #12151A">
+    <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.01em">Secret Goals</span>
+    <nav aria-label="Główna nawigacja" style="display: flex; flex-direction: column; gap: 4px">
+      <a href="DesktopGoals.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; background: #13291F; color: #5BD69B; text-decoration: none; font-weight: 600; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        <span>Cele</span>
+      </a>
+      <a href="DesktopCommunity.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #C9CED8; text-decoration: none; font-weight: 500; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Społeczność</span>
+      </a>
+      <a href="DesktopProfile.dc.html" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 12px; color: #C9CED8; text-decoration: none; font-weight: 500; font-size: 15px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Profil</span>
+      </a>
+    </nav>
+    <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: #181B21">
+      <div style="width: 36px; height: 36px; border-radius: 12px; background: #2A2F3A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #8BE5B8">AF</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 14px; font-weight: 600">Anon_Falcon92</span>
+        <span style="font-size: 12px; color: #A3A9B5">alias anonimowy</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 4vw, 48px) 48px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 34px; font-weight: 700">Twoje cele</h1>
+      <button style="height: 44px; padding: 0 18px; border-radius: 14px; border: none; background: #5BD69B; color: #06180F; font: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        <span>Nowy cel</span>
+      </button>
+    </div>
+
+    <nav aria-label="Przełącznik celów" style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{goals}}" as="g" hint-placeholder-count="3">
+        <button onClick="{{g.pick}}" style="{{g.pillStyle}}">
+          <span>{{g.short}}</span>
+          <span style="{{g.pillBadgeStyle}}">{{g.pillBadge}}</span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 20px; align-items: start">
+
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <section style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #A3A9B5">{{cur.category}}</span>
+              <h2 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 30px; line-height: 1.1; font-weight: 700">{{cur.title}}</h2>
+            </div>
+            <span style="flex-shrink: 0; font-size: 12px; padding: 6px 10px; border-radius: 999px; background: #22262E; color: #C9CED8">{{cur.visibility}}</span>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 16px">
+            <div style="width: 72px; height: 72px; border-radius: 22px; background: #173527; color: #5BD69B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+              <svg aria-hidden="true" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 60px; line-height: 0.95; font-weight: 800">{{cur.big}}</span>
+              <span style="font-size: 15px; color: #A3A9B5; margin-top: 4px">{{cur.bigLabel}}</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; justify-content: space-between; font-size: 14px">
+              <span style="color: #C9CED8">{{cur.progressLabel}}</span>
+              <span style="color: #8BE5B8; font-weight: 600">{{cur.pctLabel}}</span>
+            </div>
+            <div style="height: 10px; border-radius: 999px; background: #2A2F3A; overflow: hidden">
+              <div style="{{cur.barStyle}}"></div>
+            </div>
+            <span style="font-size: 13px; color: #A3A9B5">{{cur.hint}}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+            <sc-for list="{{cur.stats}}" as="s" hint-placeholder-count="3">
+              <div style="background: #22262E; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 24px; font-weight: 700">{{s.value}}</span>
+                <span style="font-size: 12px; color: #A3A9B5">{{s.label}}</span>
+              </div>
+            </sc-for>
+          </div>
+      <button onClick="{{openTips}}" style="align-self: flex-start; padding: 0 18px; height: 48px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5BD69B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        <span>Strategie i poradniki</span>
+      </button>
+        </section>
+
+        <section aria-label="Aktualizacja postępu" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 600">Jak dziś idzie?</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <button onClick="{{checkIn}}" style="{{doneBtnStyle}}">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span>{{doneBtnLabel}}</span>
+            </button>
+            <button style="height: 48px; padding: 0 16px; border-radius: 14px; border: 1px solid #3A404B; background: transparent; color: #C9CED8; font: inherit; font-size: 14px; cursor: pointer">{{cur.secondaryAction}}</button>
+          </div>
+          <label for="sg-note-d" style="font-size: 13px; color: #A3A9B5">Notatka do wpisu (opcjonalnie)</label>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <input id="sg-note-d" type="text" placeholder="Co dziś pomogło, a co było trudne?" style="flex: 1 1 260px; height: 48px; border-radius: 14px; border: 1px solid #2C313A; background: #0F1115; color: #F3F1EC; font: inherit; font-size: 14px; padding: 0 14px">
+            <button style="height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid #5BD69B; background: transparent; color: #8BE5B8; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+              <span>Opublikuj meldunek</span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <section aria-label="Twój cel w społeczności" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 600">Twój cel w społeczności</h2>
+            <a href="DesktopCommunity.dc.html" style="font-size: 14px; font-weight: 600; text-decoration: none">Zobacz post</a>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <div style="flex: 1; background: #1B2638; border-radius: 16px; padding: 14px; display: flex; flex-direction: column">
+              <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 26px; font-weight: 700">{{cur.supports}}</span>
+              <span style="font-size: 12px; color: #B8C8E6">osób wspiera</span>
+            </div>
+            <div style="flex: 1; background: #22262E; border-radius: 16px; padding: 14px; display: flex; flex-direction: column">
+              <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 26px; font-weight: 700">{{cur.comments}}</span>
+              <span style="font-size: 12px; color: #A3A9B5">komentarzy</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px">
+            <sc-for list="{{cur.thread}}" as="m" hint-placeholder-count="2">
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div style="width: 32px; height: 32px; border-radius: 10px; background: #233049; color: #8AB4FF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{m.initials}}</div>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 12px; color: #A3A9B5">{{m.alias}}</span>
+                  <span style="font-size: 14px; line-height: 1.45">{{m.text}}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <section aria-label="Ktoś z podobnym celem" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #A3A9B5">Nie jesteś sam</span>
+          <div style="display: flex; gap: 10px; align-items: center">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #2A2F3A; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{cur.peerInitials}}</div>
+            <div style="display: flex; flex-direction: column">
+              <span style="font-size: 15px; font-weight: 600">{{cur.peerAlias}}</span>
+              <span style="font-size: 12px; color: #A3A9B5">{{cur.peerMeta}}</span>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #DAD7D0">{{cur.peerQuote}}</p>
+          <button onClick="{{supportPeer}}" style="{{peerBtnStyle}}">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+            <span>{{peerBtnLabel}}</span>
+          </button>
+        </section>
+      </div>
+    </div>
+  </main>
+  <sc-if value="{{showTips}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 20; background: rgba(5,6,8,0.72); display: flex; align-items: center; justify-content: center">
+      <div role="dialog" aria-modal="true" aria-label="Strategie i poradniki" style="width: min(560px, calc(100% - 32px)); max-height: 760px; overflow-y: auto; box-sizing: border-box; background: #181B21; border: 1px solid #2C313A; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #8BE5B8">Strategie Secret Goals</span>
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 24px; line-height: 1.15; font-weight: 700">{{cur.title}}</h2>
+          </div>
+          <button onClick="{{closeTips}}" aria-label="Zamknij" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{tips}}" as="tp" hint-placeholder-count="4">
+            <div style="background: #22262E; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+              <span style="align-self: flex-start; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: #13291F; color: #8BE5B8">{{tp.tag}}</span>
+              <span style="font-size: 16px; font-weight: 600">{{tp.title}}</span>
+              <span style="font-size: 14px; line-height: 1.5; color: #C9CED8">{{tp.body}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin: 0; font-size: 12px; line-height: 1.45; color: #A3A9B5">Strategie przygotowane przez zespół Secret Goals. Poradniki innych użytkowników znajdziesz w zakładce Społeczność.</p>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, done: {}, peerSupported: false, tips: false };
+  }
+  renderVals() {
+    const s = this.state;
+
+    const tipsByGoal = {
+      nik: [
+        { tag: 'Kryzys', title: 'Przeczekaj falę', body: 'Silna chęć zapalenia zwykle słabnie po kilku minutach. Ustaw minutnik na 5 minut i zajmij czymś ręce.' },
+        { tag: 'Kryzys', title: 'Zasada 10 minut', body: 'Powiedz sobie: „mogę, ale za 10 minut”. Najczęściej po tym czasie chęć jest dużo słabsza.' },
+        { tag: 'Nawyk', title: 'Zmień rytuał', body: 'Jeśli paliłeś do kawy, przez pierwsze tygodnie pij ją w innym miejscu albo o innej porze.' },
+        { tag: 'Ćwiczenie', title: 'Oddech pudełkowy', body: '4 sekundy wdech, 4 zatrzymanie, 4 wydech, 4 zatrzymanie. Powtórz cztery razy.' }
+      ],
+      dlug: [
+        { tag: 'Strategia', title: 'Metoda kuli śnieżnej', body: 'Spłać najpierw najmniejszy dług. Szybkie zwycięstwo motywuje i uwalnia ratę na kolejny.' },
+        { tag: 'Nawyk', title: 'Zasada 48 godzin', body: 'Każdy zakup poza listą odłóż o dwa dni. Jeśli nadal go chcesz, wtedy zdecyduj.' },
+        { tag: 'Automatyzacja', title: 'Przelew w dniu wypłaty', body: 'Ustaw stały przelew na spłatę zaraz po wypłacie, zanim pieniądze rozejdą się na bieżące wydatki.' },
+        { tag: 'Budżet', title: 'Koperty na wydatki', body: 'Podziel miesięczny budżet na kategorie. Gdy koperta jest pusta, w tej kategorii kończysz wydatki.' }
+      ],
+      cv: [
+        { tag: 'Strategia', title: 'Dopasuj CV do ogłoszenia', body: 'Wybierz 3 kluczowe wymagania z ogłoszenia i pokaż je w pierwszych linijkach CV.' },
+        { tag: 'Nawyk', title: 'Stały blok w kalendarzu', body: 'Zarezerwuj 45 minut w dwa konkretne dni tygodnia tylko na szukanie ofert i wysyłkę.' },
+        { tag: 'Organizacja', title: 'Tabela aplikacji', body: 'Zapisuj firmę, datę i status. Po tygodniu bez odpowiedzi wyślij krótkie przypomnienie.' },
+        { tag: 'Motywacja', title: 'Odmowa to informacja', body: 'Po odmowie poproś o krótki feedback. Jedna konkretna uwaga jest warta więcej niż kolejne CV.' }
+      ]
+    };
+    const goals = [
+      {
+        short: 'Bez nikotyny', pillBadge: (18 + (s.done[0] ? 1 : 0)) + ' dni', category: 'Nałóg · seria dzienna', title: 'Zero nikotyny', visibility: 'Publiczny',
+        big: String(18 + (s.done[0] ? 1 : 0)), bigLabel: 'dni z rzędu bez nikotyny', pct: s.done[0] ? 90 : 86,
+        progressLabel: 'Do kamienia milowego (21 dni)', hint: 'Po 21 dniach w społeczności pojawi się automatyczny post z Twoim kamieniem milowym.',
+        stats: [{ value: '18', label: 'najdłuższa seria' }, { value: '6/7', label: 'dni w tym tygodniu' }, { value: '+360 zł', label: 'zaoszczędzone' }],
+        doneLabel: 'Zaliczone na dziś', doneAfter: 'Dzień 19 zaliczony', secondaryAction: 'Potknięcie',
+        supports: 42, comments: 7,
+        thread: [{ initials: 'SL', alias: 'Shadow_Lynx · 2 godz. temu', text: 'Trzeci tydzień jest najłatwiejszy, trzymaj się!' }, { initials: 'AP', alias: 'Anon_Phoenix01 · wczoraj', text: 'Pamiętam swój dzień 18. Dasz radę.' }],
+        peerInitials: 'AS', peerAlias: 'Anon_Sparrow24', peerMeta: 'Zero nikotyny · dzień 18', peerQuote: '„Ciężko o 14:00, ale kawa bez papierosa zaliczona.”'
+      },
+      {
+        short: 'Spłata długu', pillBadge: s.done[1] ? '43%' : '40%', category: 'Finanse · cel kwotowy', title: 'Spłacić kartę kredytową', visibility: 'Publiczny',
+        big: s.done[1] ? '3 400 zł' : '3 200 zł', bigLabel: 'z 8 000 zł spłacone', pct: s.done[1] ? 43 : 40,
+        progressLabel: 'Kamień milowy przy 4 000 zł', hint: 'Termin: 30 czerwca 2027.',
+        stats: [{ value: '5', label: 'wpłat w tym miesiącu' }, { value: '640 zł', label: 'średnia wpłata' }, { value: '12 tyg.', label: 'aktywności' }],
+        doneLabel: 'Dodaj wpłatę 200 zł', doneAfter: 'Wpłata dodana', secondaryAction: 'Inna kwota',
+        supports: 19, comments: 3,
+        thread: [{ initials: 'GH', alias: 'Ghost_Hawk · wczoraj', text: 'Metoda kuli śnieżnej zadziałała u mnie świetnie.' }],
+        peerInitials: 'BC', peerAlias: 'Brave_Cedar40', peerMeta: 'Spłata długu · 55%', peerQuote: '„Odłożyłem dziś premię prosto na ratę. Pierwszy raz bez żalu.”'
+      },
+      {
+        short: 'Wysyłanie CV', pillBadge: s.done[2] ? '2/3' : '1/3', category: 'Kariera · tygodniowy licznik', title: 'Wysyłać 3 CV tygodniowo', visibility: 'Prywatny',
+        big: s.done[2] ? '2/3' : '1/3', bigLabel: 'CV wysłane w tym tygodniu', pct: s.done[2] ? 67 : 33,
+        progressLabel: 'Tydzień kończy się w niedzielę', hint: 'Cel prywatny: nie pojawia się w społeczności.',
+        stats: [{ value: '4', label: 'tygodnie z rzędu' }, { value: '14', label: 'CV łącznie' }, { value: '2', label: 'rozmowy' }],
+        doneLabel: '+1 wysłane CV', doneAfter: 'Dodano CV', secondaryAction: 'Cofnij',
+        supports: 0, comments: 0,
+        thread: [{ initials: '–', alias: 'Cel prywatny', text: 'Upublicznij cel, żeby inni mogli Cię wspierać.' }],
+        peerInitials: 'SO', peerAlias: 'Silent_Otter93', peerMeta: 'Szukanie pracy · tydzień 6', peerQuote: '„Dwie odmowy dziś, ale jedna odpowiedź na rozmowę.”'
+      }
+    ];
+    const pillOn = 'height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #5BD69B; background: #13291F; color: #F3F1EC; font: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer';
+    const pillOff = 'height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #2C313A; background: #181B21; color: #C9CED8; font: inherit; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer';
+    const list = goals.map((g, i) => ({
+      ...g,
+      pick: () => this.setState({ sel: i }),
+      pillStyle: i === s.sel ? pillOn : pillOff,
+      pillBadgeStyle: 'font-size: 12px; padding: 2px 8px; border-radius: 999px; ' + (i === s.sel ? 'background: #5BD69B; color: #06180F; font-weight: 700' : 'background: #2A2F3A; color: #C9CED8')
+    }));
+    const c = list[s.sel];
+    const isDone = !!s.done[s.sel];
+    const btnBase = 'height: 48px; padding: 0 20px; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; ';
+    const peerBase = 'align-self: flex-start; height: 44px; padding: 0 18px; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; ';
+    return {
+      goals: list,
+      tips: [tipsByGoal.nik, tipsByGoal.dlug, tipsByGoal.cv][s.sel],
+      showTips: s.tips,
+      openTips: () => this.setState({ tips: true }),
+      closeTips: () => this.setState({ tips: false }),
+      cur: { ...c, pctLabel: c.pct + '%', barStyle: 'height: 100%; border-radius: 999px; background: #5BD69B; width: ' + c.pct + '%' },
+      doneBtnLabel: isDone ? c.doneAfter : c.doneLabel,
+      doneBtnStyle: btnBase + (isDone ? 'border: 1px solid #3A404B; background: #22262E; color: #C9CED8' : 'border: none; background: #5BD69B; color: #06180F'),
+      checkIn: () => this.setState({ done: { ...s.done, [s.sel]: true } }),
+      supportPeer: () => this.setState({ peerSupported: !s.peerSupported }),
+      peerBtnLabel: s.peerSupported ? 'Wsparcie wysłane' : 'Wspieram',
+      peerBtnStyle: peerBase + (s.peerSupported ? 'border: 1px solid #8AB4FF; background: #1B2638; color: #B8C8E6' : 'border: none; background: #8AB4FF; color: #0B1626')
+    };
+  }
+}
+</script>
+</body>
+</html>

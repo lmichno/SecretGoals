@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Cele – mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1115}
+a{color:#8BE5B8}a:hover{color:#B9F0D2}
+.sg-scroll::-webkit-scrollbar{display:none}
+.sg-scroll{scrollbar-width:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #F3F1EC; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 10px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="width: 36px; height: 36px; border-radius: 12px; background: #2A2F3A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #8BE5B8">AF</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #A3A9B5">Twój alias</span>
+        <span style="font-size: 15px; font-weight: 600">Anon_Falcon92</span>
+      </div>
+    </div>
+    <button aria-label="Powiadomienia" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #181B21; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+    </button>
+  </header>
+
+  <nav aria-label="Twoje cele" class="sg-scroll" style="display: flex; gap: 8px; padding: 6px 20px 14px; overflow-x: auto; flex-shrink: 0">
+    <sc-for list="{{goals}}" as="g" hint-placeholder-count="3">
+      <button onClick="{{g.pick}}" style="{{g.pillStyle}}">
+        <span>{{g.short}}</span>
+        <span style="{{g.pillBadgeStyle}}">{{g.pillBadge}}</span>
+      </button>
+    </sc-for>
+    <button aria-label="Dodaj nowy cel" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px; border: 1px dashed #3A404B; background: transparent; color: #A3A9B5; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+    </button>
+  </nav>
+
+  <main class="sg-scroll" style="flex: 1; overflow-y: auto; padding: 0 20px 110px; display: flex; flex-direction: column; gap: 14px">
+
+    <section style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #A3A9B5">{{cur.category}}</span>
+          <h1 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 26px; line-height: 1.1; font-weight: 700">{{cur.title}}</h1>
+        </div>
+        <span style="flex-shrink: 0; font-size: 12px; padding: 6px 10px; border-radius: 999px; background: #22262E; color: #C9CED8">{{cur.visibility}}</span>
+      </div>
+
+      <div style="display: flex; align-items: flex-end; gap: 14px">
+        <div style="width: 64px; height: 64px; border-radius: 20px; background: #173527; color: #5BD69B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 48px; line-height: 0.95; font-weight: 800; font-variant-numeric: tabular-nums">{{cur.big}}</span>
+          <span style="font-size: 14px; color: #A3A9B5; margin-top: 4px">{{cur.bigLabel}}</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; font-size: 13px">
+          <span style="color: #C9CED8">{{cur.progressLabel}}</span>
+          <span style="color: #8BE5B8; font-weight: 600">{{cur.pctLabel}}</span>
+        </div>
+        <div style="height: 8px; border-radius: 999px; background: #2A2F3A; overflow: hidden">
+          <div style="{{cur.barStyle}}"></div>
+        </div>
+        <span style="font-size: 12px; color: #A3A9B5; line-height: 1.4">{{cur.hint}}</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{cur.stats}}" as="s" hint-placeholder-count="3">
+          <div style="background: #22262E; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 20px; font-weight: 700">{{s.value}}</span>
+            <span style="font-size: 11px; color: #A3A9B5; line-height: 1.3">{{s.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; gap: 4px">
+        <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1">
+            <div style="{{d.dotStyle}}">
+              <sc-if value="{{d.isDone}}" hint-placeholder-val="{{ true }}">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </sc-if>
+            </div>
+            <span style="font-size: 11px; color: #A3A9B5">{{d.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <button onClick="{{openTips}}" style="height: 48px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5BD69B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        <span>Strategie i poradniki</span>
+      </button>
+    </section>
+
+    <section aria-label="Aktualizacja postępu" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 600">Jak dziś idzie?</h2>
+
+      <sc-if value="{{cur.isStreak}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; gap: 8px">
+          <button onClick="{{checkIn}}" style="{{doneBtnStyle}}">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>{{doneBtnLabel}}</span>
+          </button>
+          <button onClick="{{slip}}" style="flex: 0 0 auto; height: 48px; padding: 0 14px; border-radius: 14px; border: 1px solid #3A404B; background: transparent; color: #C9CED8; font: inherit; font-size: 14px; display: flex; align-items: center; gap: 6px; cursor: pointer">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+            <span>Potknięcie</span>
+          </button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{cur.isAmount}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px">
+          <button onClick="{{add100}}" style="flex: 1; height: 48px; border-radius: 14px; border: 1px solid #3A404B; background: #22262E; color: #F3F1EC; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">+100 zł</button>
+          <button onClick="{{add500}}" style="flex: 1; height: 48px; border-radius: 14px; border: 1px solid #3A404B; background: #22262E; color: #F3F1EC; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">+500 zł</button>
+          <button style="flex: 1; height: 48px; border-radius: 14px; border: none; background: #5BD69B; color: #06180F; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Inna kwota</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{cur.isCount}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px; align-items: center">
+          <button onClick="{{minus1}}" aria-label="Odejmij jeden" style="width: 48px; height: 48px; border-radius: 14px; border: 1px solid #3A404B; background: transparent; color: #F3F1EC; font: inherit; font-size: 22px; cursor: pointer">−</button>
+          <div style="flex: 1; text-align: center; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 28px; font-weight: 700">{{cur.big}}</div>
+          <button onClick="{{plus1}}" style="height: 48px; padding: 0 18px; border-radius: 14px; border: none; background: #5BD69B; color: #06180F; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">+1 wysłane CV</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{slipped}}" hint-placeholder-val="{{ false }}">
+        <p style="margin: 0; padding: 12px 14px; border-radius: 14px; background: #22262E; font-size: 13px; line-height: 1.45; color: #C9CED8">Zapisane. Seria zacznie się od nowa jutro, a Twoje 18 dni zostaje w historii celu. Społeczność zobaczy wpis tylko, jeśli go opublikujesz.</p>
+      </sc-if>
+
+      <label for="sg-note" style="font-size: 13px; color: #A3A9B5">Notatka do dzisiejszego wpisu (opcjonalnie)</label>
+      <textarea id="sg-note" rows="2" placeholder="Np. poranna kawa bez papierosa, było ciężko ok. 14:00" style="resize: none; border-radius: 14px; border: 1px solid #2C313A; background: #0F1115; color: #F3F1EC; font: inherit; font-size: 14px; padding: 12px 14px; line-height: 1.4"></textarea>
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #C9CED8; min-height: 44px; cursor: pointer">
+        <input type="checkbox" checked="{{publish}}" onChange="{{togglePublish}}" style="width: 20px; height: 20px; accent-color: #5BD69B">
+        <span>Opublikuj jako meldunek w społeczności</span>
+      </label>
+    </section>
+
+    <section aria-label="Twój cel w społeczności" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 600">Twój cel w społeczności</h2>
+        <a href="Community.dc.html" style="font-size: 13px; font-weight: 600; text-decoration: none; padding: 10px 0">Zobacz post</a>
+      </div>
+      <p style="margin: 0; font-size: 13px; color: #A3A9B5; line-height: 1.45">Każdy publiczny cel jest automatycznie postem. Inni widzą Twój alias, serię i meldunki, nigdy e-mail.</p>
+      <div style="display: flex; gap: 8px">
+        <div style="flex: 1; background: #1B2638; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8AB4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 18px; font-weight: 700">{{cur.supports}}</span>
+            <span style="font-size: 11px; color: #B8C8E6">osób wspiera</span>
+          </div>
+        </div>
+        <div style="flex: 1; background: #22262E; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9CED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 18px; font-weight: 700">{{cur.comments}}</span>
+            <span style="font-size: 11px; color: #A3A9B5">komentarzy</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: flex-start; padding-top: 4px">
+        <div style="width: 32px; height: 32px; border-radius: 10px; background: #233049; color: #8AB4FF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{cur.lastInitials}}</div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; color: #A3A9B5">{{cur.lastAlias}}</span>
+          <span style="font-size: 14px; line-height: 1.4">{{cur.lastComment}}</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Ktoś z podobnym celem" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #A3A9B5">Nie jesteś sam</span>
+      <div style="display: flex; gap: 10px; align-items: center">
+        <div style="width: 36px; height: 36px; border-radius: 12px; background: #2A2F3A; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{cur.peerInitials}}</div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-size: 14px; font-weight: 600">{{cur.peerAlias}}</span>
+          <span style="font-size: 12px; color: #A3A9B5">{{cur.peerMeta}}</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #DAD7D0">{{cur.peerQuote}}</p>
+      <button onClick="{{supportPeer}}" style="{{peerBtnStyle}}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+        <span>{{peerBtnLabel}}</span>
+      </button>
+    </section>
+  </main>
+
+  <nav aria-label="Główna nawigacja" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #12151A; border-top: 1px solid #2C313A; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; box-sizing: border-box">
+    <a href="Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #5BD69B; font-size: 12px; font-weight: 600">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+      <span>Cele</span>
+    </a>
+    <a href="Community.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span>Społeczność</span>
+    </a>
+    <a href="Profile.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  <sc-if value="{{showTips}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; z-index: 20; background: rgba(5,6,8,0.72); display: flex; align-items: flex-end; justify-content: center">
+      <div role="dialog" aria-modal="true" aria-label="Strategie i poradniki" style="width: 100%; max-height: 720px; overflow-y: auto; box-sizing: border-box; background: #181B21; border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 22px 20px 28px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #8BE5B8">Strategie Secret Goals</span>
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 24px; line-height: 1.15; font-weight: 700">{{cur.title}}</h2>
+          </div>
+          <button onClick="{{closeTips}}" aria-label="Zamknij" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{tips}}" as="tp" hint-placeholder-count="4">
+            <div style="background: #22262E; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+              <span style="align-self: flex-start; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: #13291F; color: #8BE5B8">{{tp.tag}}</span>
+              <span style="font-size: 16px; font-weight: 600">{{tp.title}}</span>
+              <span style="font-size: 14px; line-height: 1.5; color: #C9CED8">{{tp.body}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin: 0; font-size: 12px; line-height: 1.45; color: #A3A9B5">Strategie przygotowane przez zespół Secret Goals. Poradniki innych użytkowników znajdziesz w zakładce Społeczność.</p>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, doneToday: false, slipped: false, paid: 3200, cv: 1, publish: true, peerSupported: false, tips: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const fmt = (n) => n.toLocaleString('pl-PL');
+    const streakDays = 18 + (s.doneToday ? 1 : 0);
+
+    const tipsByGoal = {
+      nik: [
+        { tag: 'Kryzys', title: 'Przeczekaj falę', body: 'Silna chęć zapalenia zwykle słabnie po kilku minutach. Ustaw minutnik na 5 minut i zajmij czymś ręce.' },
+        { tag: 'Kryzys', title: 'Zasada 10 minut', body: 'Powiedz sobie: „mogę, ale za 10 minut”. Najczęściej po tym czasie chęć jest dużo słabsza.' },
+        { tag: 'Nawyk', title: 'Zmień rytuał', body: 'Jeśli paliłeś do kawy, przez pierwsze tygodnie pij ją w innym miejscu albo o innej porze.' },
+        { tag: 'Ćwiczenie', title: 'Oddech pudełkowy', body: '4 sekundy wdech, 4 zatrzymanie, 4 wydech, 4 zatrzymanie. Powtórz cztery razy.' }
+      ],
+      dlug: [
+        { tag: 'Strategia', title: 'Metoda kuli śnieżnej', body: 'Spłać najpierw najmniejszy dług. Szybkie zwycięstwo motywuje i uwalnia ratę na kolejny.' },
+        { tag: 'Nawyk', title: 'Zasada 48 godzin', body: 'Każdy zakup poza listą odłóż o dwa dni. Jeśli nadal go chcesz, wtedy zdecyduj.' },
+        { tag: 'Automatyzacja', title: 'Przelew w dniu wypłaty', body: 'Ustaw stały przelew na spłatę zaraz po wypłacie, zanim pieniądze rozejdą się na bieżące wydatki.' },
+        { tag: 'Budżet', title: 'Koperty na wydatki', body: 'Podziel miesięczny budżet na kategorie. Gdy koperta jest pusta, w tej kategorii kończysz wydatki.' }
+      ],
+      cv: [
+        { tag: 'Strategia', title: 'Dopasuj CV do ogłoszenia', body: 'Wybierz 3 kluczowe wymagania z ogłoszenia i pokaż je w pierwszych linijkach CV.' },
+        { tag: 'Nawyk', title: 'Stały blok w kalendarzu', body: 'Zarezerwuj 45 minut w dwa konkretne dni tygodnia tylko na szukanie ofert i wysyłkę.' },
+        { tag: 'Organizacja', title: 'Tabela aplikacji', body: 'Zapisuj firmę, datę i status. Po tygodniu bez odpowiedzi wyślij krótkie przypomnienie.' },
+        { tag: 'Motywacja', title: 'Odmowa to informacja', body: 'Po odmowie poproś o krótki feedback. Jedna konkretna uwaga jest warta więcej niż kolejne CV.' }
+      ]
+    };
+    const goals = [
+      {
+        id: 'nik', short: 'Bez nikotyny', pillBadge: streakDays + ' dni', category: 'Nałóg · seria dzienna', title: 'Zero nikotyny', visibility: 'Publiczny',
+        kind: 'streak', big: String(streakDays), bigLabel: 'dni z rzędu bez nikotyny',
+        pct: Math.round(streakDays / 21 * 100), progressLabel: streakDays + ' / 21 dni do kamienia milowego',
+        hint: 'Po 21 dniach w społeczności pojawi się automatyczny post z Twoim kamieniem milowym.',
+        stats: [{ value: '18', label: 'najdłuższa seria' }, { value: '6/7', label: 'dni w tym tygodniu' }, { value: '+360 zł', label: 'zaoszczędzone' }],
+        supports: 42, comments: 7, lastInitials: 'SL', lastAlias: 'Shadow_Lynx · 2 godz. temu', lastComment: 'Trzeci tydzień jest najłatwiejszy, trzymaj się!',
+        peerInitials: 'AS', peerAlias: 'Anon_Sparrow24', peerMeta: 'Zero nikotyny · dzień 18', peerQuote: '„Ciężko o 14:00, ale kawa bez papierosa zaliczona.”'
+      },
+      {
+        id: 'dlug', short: 'Spłata długu', pillBadge: Math.round(s.paid / 80) + '%', category: 'Finanse · cel kwotowy', title: 'Spłacić kartę kredytową', visibility: 'Publiczny',
+        kind: 'amount', big: fmt(s.paid) + ' zł', bigLabel: 'z 8 000 zł spłacone',
+        pct: Math.round(s.paid / 80), progressLabel: 'Kamień milowy przy 4 000 zł',
+        hint: 'Termin: 30 czerwca 2027. Przy obecnym tempie zdążysz z zapasem 3 tygodni.',
+        stats: [{ value: '5', label: 'wpłat w tym miesiącu' }, { value: '640 zł', label: 'średnia wpłata' }, { value: '12 tyg.', label: 'aktywności' }],
+        supports: 19, comments: 3, lastInitials: 'GH', lastAlias: 'Ghost_Hawk · wczoraj', lastComment: 'Metoda kuli śnieżnej zadziałała u mnie świetnie.',
+        peerInitials: 'BC', peerAlias: 'Brave_Cedar40', peerMeta: 'Spłata długu · 55%', peerQuote: '„Odłożyłem dziś premię prosto na ratę. Pierwszy raz bez żalu.”'
+      },
+      {
+        id: 'cv', short: 'Wysyłanie CV', pillBadge: s.cv + '/3', category: 'Kariera · tygodniowy licznik', title: 'Wysyłać 3 CV tygodniowo', visibility: 'Prywatny',
+        kind: 'count', big: s.cv + '/3', bigLabel: 'CV wysłane w tym tygodniu',
+        pct: Math.min(100, Math.round(s.cv / 3 * 100)), progressLabel: 'Tydzień kończy się w niedzielę',
+        hint: 'Cel prywatny: nie pojawia się w społeczności, ale możesz go upublicznić w każdej chwili.',
+        stats: [{ value: '4', label: 'tygodnie z rzędu' }, { value: '14', label: 'CV łącznie' }, { value: '2', label: 'rozmowy' }],
+        supports: 0, comments: 0, lastInitials: '–', lastAlias: 'Cel prywatny', lastComment: 'Upublicznij cel, żeby inni mogli Cię wspierać.',
+        peerInitials: 'SO', peerAlias: 'Silent_Otter93', peerMeta: 'Szukanie pracy · tydzień 6', peerQuote: '„Dwie odmowy dziś, ale jedna odpowiedź na rozmowę. Jedziemy dalej.”'
+      }
+    ];
+    const pillOn = 'flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 14px; border: 1px solid #5BD69B; background: #13291F; color: #F3F1EC; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer';
+    const pillOff = 'flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 14px; border: 1px solid #2C313A; background: #181B21; color: #C9CED8; font: inherit; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer';
+    const badgeOn = 'font-size: 12px; padding: 2px 8px; border-radius: 999px; background: #5BD69B; color: #06180F; font-weight: 700';
+    const badgeOff = 'font-size: 12px; padding: 2px 8px; border-radius: 999px; background: #2A2F3A; color: #C9CED8';
+    const list = goals.map((g, i) => ({
+      ...g,
+      pick: () => this.setState({ sel: i, slipped: false }),
+      pillStyle: i === s.sel ? pillOn : pillOff,
+      pillBadgeStyle: i === s.sel ? badgeOn : badgeOff
+    }));
+    const c = list[s.sel];
+    const cur = {
+      ...c,
+      isStreak: c.kind === 'streak', isAmount: c.kind === 'amount', isCount: c.kind === 'count',
+      pctLabel: c.pct + '%',
+      barStyle: 'height: 100%; border-radius: 999px; background: #5BD69B; width: ' + c.pct + '%'
+    };
+    const labels = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'];
+    const pattern = ['done', 'done', 'done', 'miss', 'done', 'today', 'future'];
+    const week = labels.map((label, i) => {
+      let st = pattern[i];
+      if (st === 'today' && s.doneToday) st = 'done';
+      const base = 'width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; ';
+      const look = {
+        done: 'background: #5BD69B; color: #06180F',
+        miss: 'background: #22262E; border: 1px solid #3A404B',
+        today: 'background: transparent; border: 2px solid #5BD69B',
+        future: 'background: #181B21; border: 1px dashed #3A404B'
+      }[st];
+      return { label, isDone: st === 'done', dotStyle: base + look };
+    });
+    const btnBase = 'flex: 1; height: 48px; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; ';
+    const peerBase = 'height: 44px; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; ';
+    return {
+      goals: list, cur, week,
+      tips: tipsByGoal[c.id],
+      showTips: s.tips,
+      openTips: () => this.setState({ tips: true }),
+      closeTips: () => this.setState({ tips: false }),
+      slipped: s.slipped,
+      publish: s.publish,
+      doneBtnLabel: s.doneToday ? 'Dzień 19 zaliczony' : 'Zaliczone na dziś',
+      doneBtnStyle: btnBase + (s.doneToday ? 'border: 1px solid #3A404B; background: #22262E; color: #C9CED8' : 'border: none; background: #5BD69B; color: #06180F'),
+      checkIn: () => this.setState({ doneToday: true, slipped: false }),
+      slip: () => this.setState({ slipped: true, doneToday: false }),
+      add100: () => this.setState({ paid: Math.min(8000, s.paid + 100) }),
+      add500: () => this.setState({ paid: Math.min(8000, s.paid + 500) }),
+      plus1: () => this.setState({ cv: s.cv + 1 }),
+      minus1: () => this.setState({ cv: Math.max(0, s.cv - 1) }),
+      togglePublish: () => this.setState({ publish: !s.publish }),
+      supportPeer: () => this.setState({ peerSupported: !s.peerSupported }),
+      peerBtnLabel: s.peerSupported ? 'Wsparcie wysłane' : 'Wspieram',
+      peerBtnStyle: peerBase + (s.peerSupported ? 'border: 1px solid #8AB4FF; background: #1B2638; color: #B8C8E6' : 'border: none; background: #8AB4FF; color: #0B1626')
+    };
+  }
+}
+</script>
+</body>
+</html>

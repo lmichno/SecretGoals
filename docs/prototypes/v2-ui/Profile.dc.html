@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Profil – mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1115}
+a{color:#8BE5B8}a:hover{color:#B9F0D2}
+.sg-scroll::-webkit-scrollbar{display:none}
+.sg-scroll{scrollbar-width:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #F3F1EC; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+  <header style="padding: 18px 20px 10px">
+    <h1 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 26px; font-weight: 700">Profil</h1>
+  </header>
+
+  <main class="sg-scroll" style="flex: 1; overflow-y: auto; padding: 4px 20px 110px; display: flex; flex-direction: column; gap: 14px">
+
+    <section aria-label="Tożsamość" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <div style="width: 60px; height: 60px; border-radius: 20px; background: #173527; color: #5BD69B; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 22px; font-weight: 800">{{initials}}</div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 20px; font-weight: 700">{{alias}}</span>
+          <span style="font-size: 13px; color: #A3A9B5">w Secret Goals od września 2026</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #C9CED8">Inni widzą tylko Twój alias. Adres e-mail służy wyłącznie do logowania i nigdy nie jest pokazywany.</p>
+      <button onClick="{{reroll}}" style="height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; font: inherit; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BD69B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        <span>Losuj nowy alias</span>
+      </button>
+    </section>
+
+    <section aria-label="Podsumowanie" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+        <div style="background: #181B21; border: 1px solid #2C313A; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 26px; font-weight: 700">{{s.value}}</span>
+          <span style="font-size: 12px; color: #A3A9B5">{{s.label}}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <section aria-label="Aktywność" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 600">Aktywność</h2>
+        <span style="font-size: 12px; color: #A3A9B5">ostatnie 5 tygodni</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{heat}}" as="h" hint-placeholder-count="35">
+          <div style="{{h.style}}"></div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 6px; align-items: center; font-size: 11px; color: #A3A9B5">
+        <span>mniej</span>
+        <span style="width: 12px; height: 12px; border-radius: 4px; background: #22262E"></span>
+        <span style="width: 12px; height: 12px; border-radius: 4px; background: #1E5A3E"></span>
+        <span style="width: 12px; height: 12px; border-radius: 4px; background: #5BD69B"></span>
+        <span>więcej meldunków</span>
+      </div>
+    </section>
+
+    <section aria-label="Moje cele" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+      <h2 style="margin: 0 0 6px; font-size: 16px; font-weight: 600">Moje cele i widoczność</h2>
+      <sc-for list="{{goals}}" as="g" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; border-top: 1px solid #2C313A">
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 14px; font-weight: 600">{{g.title}}</span>
+            <span style="font-size: 12px; color: #A3A9B5">{{g.meta}}</span>
+          </div>
+          <button onClick="{{g.toggle}}" style="{{g.btnStyle}}">{{g.label}}</button>
+        </div>
+      </sc-for>
+    </section>
+
+    <section aria-label="Ustawienia" style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 2px">
+      <h2 style="margin: 0 0 6px; font-size: 16px; font-weight: 600">Ustawienia</h2>
+      <sc-for list="{{settings}}" as="o" hint-placeholder-count="3">
+        <label style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; border-top: 1px solid #2C313A; font-size: 14px; color: #DAD7D0; cursor: pointer">
+          <span>{{o.label}}</span>
+          <input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="width: 20px; height: 20px; accent-color: #5BD69B; flex-shrink: 0">
+        </label>
+      </sc-for>
+      <div style="display: flex; gap: 8px; padding-top: 12px">
+        <button style="flex: 1; height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #22262E; color: #F3F1EC; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Eksportuj dane</button>
+        <button style="flex: 1; height: 44px; border-radius: 14px; border: 1px solid #5A2E2E; background: transparent; color: #F2A7A7; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Wyloguj</button>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="Główna nawigacja" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #12151A; border-top: 1px solid #2C313A; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; box-sizing: border-box">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+      <span>Cele</span>
+    </a>
+    <a href="Community.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span>Społeczność</span>
+    </a>
+    <a href="Profile.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #5BD69B; font-size: 12px; font-weight: 600">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { aliasIdx: 0, pub: [true, true, false], opt: [true, true, false] };
+  }
+  renderVals() {
+    const s = this.state;
+    const aliases = ['Anon_Falcon92', 'Silent_Otter93', 'Brave_Cedar40', 'Night_Lynx17'];
+    const alias = aliases[s.aliasIdx % aliases.length];
+    const initials = alias.split('_').map((p) => p[0]).join('').toUpperCase();
+    const levels = [2,2,1,0,2,1,0, 2,1,2,2,0,1,1, 2,2,2,1,2,0,1, 2,2,1,2,2,2,0, 2,2,2,0,2,2,1];
+    const colors = ['#22262E', '#1E5A3E', '#5BD69B'];
+    const heat = levels.map((l) => ({ style: 'aspect-ratio: 1; border-radius: 6px; background: ' + colors[l] }));
+    const goalDefs = [
+      { title: 'Zero nikotyny', meta: 'seria 18 dni' },
+      { title: 'Spłacić kartę kredytową', meta: '40% · 3 200 / 8 000 zł' },
+      { title: 'Wysyłać 3 CV tygodniowo', meta: '1/3 w tym tygodniu' }
+    ];
+    const goals = goalDefs.map((g, i) => {
+      const on = s.pub[i];
+      return {
+        ...g,
+        label: on ? 'Publiczny' : 'Prywatny',
+        btnStyle: 'flex-shrink: 0; height: 36px; min-width: 96px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; ' + (on ? 'border: none; background: #13291F; color: #8BE5B8' : 'border: 1px solid #3A404B; background: transparent; color: #C9CED8'),
+        toggle: () => { const pub = s.pub.slice(); pub[i] = !pub[i]; this.setState({ pub }); }
+      };
+    });
+    const optDefs = ['Przypomnienie o meldunku o 20:00', 'Pokazuj moje kamienie milowe w feedzie', 'Ukryj mnie w „Podobne cele”'];
+    const settings = optDefs.map((label, i) => ({
+      label, on: s.opt[i],
+      toggle: () => { const opt = s.opt.slice(); opt[i] = !opt[i]; this.setState({ opt }); }
+    }));
+    return {
+      alias, initials, heat, goals, settings,
+      reroll: () => this.setState({ aliasIdx: s.aliasIdx + 1 }),
+      stats: [
+        { value: '3', label: 'aktywne cele' },
+        { value: '18 dni', label: 'najdłuższa seria' },
+        { value: '61', label: 'otrzymane wsparcie' },
+        { value: '48', label: 'udzielone wsparcie' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
