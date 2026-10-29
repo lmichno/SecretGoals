@@ -11,6 +11,7 @@ Interaktywny prototyp: https://claude.ai/artifact/UHzWL2uCYZhz1JscS3Xvne
 | Cele | `Main.dc.html` | `DesktopGoals.dc.html` |
 | Społeczność | `Community.dc.html` | `DesktopCommunity.dc.html` |
 | Profil | `Profile.dc.html` | `DesktopProfile.dc.html` |
+| Logowanie i rejestracja | `Auth.dc.html` | `DesktopAuth.dc.html` |
 
 ### Założenia
 
@@ -18,6 +19,7 @@ Interaktywny prototyp: https://claude.ai/artifact/UHzWL2uCYZhz1JscS3Xvne
 - **Cel jako post:** każdy publiczny cel jest automatycznie postem w społeczności, a „polubienie” to wsparcie („Wspieram”). Na ekranie celu widać liczbę wspierających, ostatni komentarz i osobę z podobnym celem (US05).
 - **Społeczność:** pionowy feed pełnoekranowych wpisów jak rolki (meldunki, kamienie milowe, poradniki, nowe cele), przewijany scrollem także na desktopie. Filtry: Dla Ciebie, Podobne cele, Kamienie milowe, Poradniki.
 - **Profil:** alias z możliwością wylosowania nowego, podsumowanie, mapa aktywności, widoczność celów, ustawienia.
+- **Logowanie i rejestracja:** jeden ekran z przełącznikiem. Rejestracja wymaga tylko e-maila i hasła, a alias jest generowany automatycznie (można go wylosować ponownie). Informacja, że e-mail nie jest nigdy pokazywany innym (US01).
 - **Responsywność:** aplikacja webowa dla telefonów i komputerów (nawigacja dolna na telefonie, boczna na desktopie).
 
 ### Styl
