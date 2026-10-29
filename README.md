@@ -4,8 +4,9 @@ Anonimowa platforma webowa łącząca mechanizmy śledzenia celów i nawyków ze
 
 ## Stos technologiczny
 
+- **Język:** TypeScript (tryb `strict`) w kliencie i serwerze
 - **Frontend (`/client`):** React 19, Vite, Tailwind CSS v4, Lucide Icons
-- **Backend (`/server`):** Node.js, Express.js
+- **Backend (`/server`):** Node.js, Express.js, `tsx` (tryb deweloperski)
 - **Baza danych:** SQLite + Prisma ORM
 - **Zarządzanie procesami:** Concurrently (uruchamianie jednym poleceniem)
 - **Jakość kodu:** Oxlint (linter), Prettier (formatter), Husky + lint-staged (hook przed commitem)
@@ -23,8 +24,8 @@ SecretGoals/
 │       ├── components/     # Komponenty UI wielokrotnego użytku
 │       ├── hooks/          # Własne hooki React
 │       ├── pages/          # Widoki/zakładki: Cele, Społeczność, Profil
-│       ├── App.jsx
-│       └── main.jsx
+│       ├── App.tsx
+│       └── main.tsx
 ├── server/                 # Backend (Express)
 │   ├── prisma/             # Schemat bazy danych (schema.prisma)
 │   └── src/
@@ -32,9 +33,9 @@ SecretGoals/
 │       ├── middleware/     # Middleware Express (np. autoryzacja)
 │       ├── routes/         # Definicje endpointów /api/...
 │       ├── services/       # Logika biznesowa i dostęp do danych
-│       ├── prisma.js       # Klient Prisma
-│       └── index.js        # Punkt wejścia serwera
-├── docs/                   # Dokumentacja: badanie rynku, user stories, SysML, prototypy UI
+│       ├── prisma.ts       # Klient Prisma
+│       └── index.ts        # Punkt wejścia serwera
+├── docs/                   # Dokumentacja: ADR, badanie rynku, user stories, SysML, prototypy UI
 ├── .husky/                 # Hooki Git (pre-commit)
 ├── .editorconfig           # Wspólne ustawienia edytora
 ├── .oxlintrc.json          # Konfiguracja lintera
@@ -81,19 +82,20 @@ Polecenie to równolegle uruchamia:
 
 ## Przydatne polecenia
 
-| Polecenie               | Opis                                                         |
-| :---------------------- | :----------------------------------------------------------- |
-| `npm run dev`           | Uruchamia jednocześnie backend i frontend                    |
-| `npm run dev:server`    | Uruchamia tylko backend Express                              |
-| `npm run dev:client`    | Uruchamia tylko frontend React (Vite)                        |
-| `npm run build`         | Buduje produkcyjną wersję frontendu                          |
-| `npm run lint`          | Sprawdza cały kod linterem (Oxlint)                          |
-| `npm run lint:fix`      | Poprawia automatycznie to, co linter potrafi naprawić        |
-| `npm run format`        | Formatuje cały projekt Prettierem                            |
-| `npm run format:check`  | Sprawdza formatowanie bez zmieniania plików                  |
-| `npm run check`         | Lint + sprawdzenie formatowania (np. przed oddaniem zadania) |
-| `npm run prisma:studio` | Otwiera graficzny interfejs Prisma Studio dla bazy SQLite    |
-| `npm run prisma:push`   | Synchronizuje schemat Prisma z bazą SQLite (`dev.db`)        |
+| Polecenie               | Opis                                                      |
+| :---------------------- | :-------------------------------------------------------- |
+| `npm run dev`           | Uruchamia jednocześnie backend i frontend                 |
+| `npm run dev:server`    | Uruchamia tylko backend Express                           |
+| `npm run dev:client`    | Uruchamia tylko frontend React (Vite)                     |
+| `npm run build`         | Sprawdza typy i buduje produkcyjną wersję frontendu       |
+| `npm run lint`          | Sprawdza cały kod linterem (Oxlint)                       |
+| `npm run lint:fix`      | Poprawia automatycznie to, co linter potrafi naprawić     |
+| `npm run format`        | Formatuje cały projekt Prettierem                         |
+| `npm run format:check`  | Sprawdza formatowanie bez zmieniania plików               |
+| `npm run typecheck`     | Sprawdza typy TypeScript w serwerze i kliencie            |
+| `npm run check`         | Lint + formatowanie + typy (np. przed oddaniem zadania)   |
+| `npm run prisma:studio` | Otwiera graficzny interfejs Prisma Studio dla bazy SQLite |
+| `npm run prisma:push`   | Synchronizuje schemat Prisma z bazą SQLite (`dev.db`)     |
 
 ---
 
@@ -113,11 +115,22 @@ Polecenie to równolegle uruchamia:
 
 ### Nazewnictwo
 
-- Komponenty React i ich pliki: `PascalCase` (`GoalCard.jsx`).
-- Hooki: `useCamelCase` (`useGoals.js`).
-- Pozostałe pliki JS, funkcje i zmienne: `camelCase` (`goalsController.js`).
+- Komponenty React i ich pliki: `PascalCase` (`GoalCard.tsx`).
+- Hooki: `useCamelCase` (`useGoals.ts`).
+- Pozostałe pliki, funkcje i zmienne: `camelCase` (`goalsController.ts`).
+- Typy i interfejsy: `PascalCase` (`ServerStatus`, `CreateGoalInput`).
 - Endpointy API: rzeczowniki w liczbie mnogiej pod `/api` (`/api/goals`).
 - Modele Prisma: `PascalCase` w liczbie pojedynczej (`Goal`, `User`).
+
+### TypeScript
+
+- Cały kod piszemy w TypeScripcie (`.ts`, `.tsx`), w trybie `strict`.
+- Zakaz `any` (wymusza linter). Dane z zewnątrz (body żądania, odpowiedź API) traktujemy jako
+  `unknown` i sprawdzamy przed użyciem.
+- Na serwerze importy lokalnych plików piszemy z końcówką `.js`, mimo że plik ma `.ts`
+  (`import goalsRoutes from './routes/goals.js'`). Tego wymaga Node.js przy modułach ES, a
+  TypeScript sam znajdzie właściwy plik. W kliencie końcówek nie podajemy.
+- Typy modeli bazy bierzemy z klienta Prisma, nie piszemy ich ręcznie.
 
 ### Automatyczne wymuszanie
 
@@ -128,6 +141,11 @@ Przed każdym commitem Husky uruchamia `lint-staged`, który na zmienionych plik
 - Gałąź główna: `main`. Nowe funkcje na gałęziach `feature/<nazwa>`, poprawki na `fix/<nazwa>`.
 - Komunikaty commitów w trybie rozkazującym, krótko i konkretnie (np. „Dodaj endpoint listy celów”).
 - Pliki `.env` i bazy `*.db` nie trafiają do repozytorium (`.gitignore`), wzór konfiguracji jest w `server/.env.example`.
+
+## Decyzje architektoniczne
+
+Decyzje architektoniczne (stack, warstwy, API, logowanie, model danych) są w
+[docs/ADR.md](docs/ADR.md).
 
 ## Prototyp UI
 

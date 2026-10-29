@@ -21,10 +21,10 @@ danych) zapisujemy tutaj _przed_ ich wdrożeniem.
 | Nr      | Decyzja                                                           | Status        | W kodzie  | Widok 4+1         |
 | :------ | :---------------------------------------------------------------- | :------------ | :-------- | :---------------- |
 | ADR-001 | Architektura klient–serwer (SPA + REST API) w jednym repozytorium | Zaakceptowana | Tak       | Fizyczny, Dev.    |
-| ADR-002 | Frontend: React + Vite + Tailwind CSS                             | Zaakceptowana | Częściowo | Deweloperski      |
-| ADR-003 | Backend: Node.js + Express                                        | Zaakceptowana | Częściowo | Deweloperski      |
+| ADR-002 | Frontend: React + Vite + Tailwind CSS                             | Zaakceptowana | Tak       | Deweloperski      |
+| ADR-003 | Backend: Node.js + Express                                        | Zaakceptowana | Tak       | Deweloperski      |
 | ADR-004 | Baza danych: SQLite + Prisma ORM                                  | Zaakceptowana | Tak       | Logiczny, Dane    |
-| ADR-005 | Warstwy backendu: routes → controllers → services → Prisma        | Zaakceptowana | Częściowo | Deweloperski      |
+| ADR-005 | Warstwy backendu: routes → controllers → services → Prisma        | Zaakceptowana | Tak       | Deweloperski      |
 | ADR-006 | Kontrakt REST API pod `/api` w formacie JSON                      | Zaakceptowana | Częściowo | Procesu           |
 | ADR-007 | Anonimowość: alias publiczny, e-mail tylko do logowania           | Zaakceptowana | Nie       | Logiczny, Dane    |
 | ADR-008 | Uwierzytelnianie: hasło (bcrypt) + JWT w ciasteczku httpOnly      | Zaakceptowana | Nie       | Procesu           |
@@ -36,10 +36,10 @@ danych) zapisujemy tutaj _przed_ ich wdrożeniem.
 | ADR-014 | Responsywny web zamiast aplikacji mobilnej                        | Zaakceptowana | Tak       | Fizyczny          |
 | ADR-015 | Jakość kodu: Oxlint, Prettier, Husky i review przez Pull Request  | Zaakceptowana | Tak       | Deweloperski      |
 | ADR-016 | Logowanie przez Google i Facebook (OAuth 2.0)                     | Zaakceptowana | Nie       | Procesu, Dane     |
-| ADR-017 | TypeScript na frontendzie i backendzie                            | Zaakceptowana | Nie       | Deweloperski      |
+| ADR-017 | TypeScript na frontendzie i backendzie                            | Zaakceptowana | Tak       | Deweloperski      |
 
 Wymagania, z których wynikają decyzje (widok „+1”, czyli przypadki użycia), są w
-[`docs/user-stories_and_use-case/user_stories.md`](docs/user-stories_and_use-case/user_stories.md)
+[`docs/user-stories_and_use-case/user_stories.md`](user-stories_and_use-case/user_stories.md)
 (US01–US05) oraz na diagramie przypadków użycia `docs/user-stories_and_use-case/usecase.jpg`.
 
 ---
@@ -226,8 +226,7 @@ Reguły:
 - Kontroler nie importuje `prisma` bezpośrednio (wyjątek: `healthController`, który sprawdza samo
   połączenie z bazą).
 
-Obecny `goalsController.js` woła Prismę bezpośrednio. Przy najbliższej zmianie tego pliku
-przeniesiemy zapytania do `services/goalsService.ts`.
+Zapytania o cele są w `services/goalsService.ts`, a `goalsController.ts` tylko je wywołuje.
 
 ### Rozważone alternatywy
 
@@ -787,8 +786,8 @@ kompilacji, zanim trafią do PR.
   zawężamy je walidacją (ADR-009).
 - `npm run check` w katalogu głównym obejmuje też sprawdzenie typów w obu częściach, a Oxlint
   dostaje plugin `typescript`.
-- Istniejące pliki JS (`client/src/*.jsx`, `server/src/**/*.js`) przepisujemy na TypeScript na
-  początku implementacji logowania, zanim dojdzie nowy kod.
+- Pierwotne pliki JS (`client/src/*.jsx`, `server/src/**/*.js`) przepisaliśmy na TypeScript
+  29.10.2026, przed implementacją logowania.
 
 ### Rozważone alternatywy
 

@@ -1,6 +1,7 @@
+import type { Request, Response } from 'express'
 import prisma from '../prisma.js'
 
-export async function getHealth(req, res) {
+export async function getHealth(_req: Request, res: Response) {
   try {
     await prisma.$queryRaw`SELECT 1`
     res.json({
@@ -13,7 +14,7 @@ export async function getHealth(req, res) {
     res.status(500).json({
       status: 'error',
       message: 'Błąd połączenia z bazą SQLite',
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     })
   }
 }

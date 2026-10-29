@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Shield, Sparkles, Server, CheckCircle2, AlertCircle } from 'lucide-react'
 
+interface ServerStatus {
+  status: 'ok' | 'error'
+  message: string
+}
+
 function App() {
-  const [serverStatus, setServerStatus] = useState(null)
+  const [serverStatus, setServerStatus] = useState<ServerStatus | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch('/api/health')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: ServerStatus) => {
         setServerStatus(data)
         setLoading(false)
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.error('Error fetching API status:', err)
         setServerStatus({ status: 'error', message: 'Nie udało się połączyć z serwerem' })
         setLoading(false)
