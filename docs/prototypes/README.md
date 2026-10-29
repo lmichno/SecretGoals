@@ -4,7 +4,9 @@
 
 Interaktywny prototyp: https://claude.ai/artifact/UHzWL2uCYZhz1JscS3Xvne
 
-Źródła ekranów są w folderze [`v2-ui/`](v2-ui/) (format `.dc.html` edytora prototypów, otwierają się poprawnie tylko w nim).
+Źródła ekranów są w folderze [`v2-ui/`](v2-ui/) (format `.dc.html` edytora prototypów, otwierają się poprawnie tylko w nim). Zrzuty PNG wszystkich ekranów i stanów są w [`v2-ui/screenshots/`](v2-ui/screenshots/).
+
+**Implementując frontend, zacznij od [UI_GUIDE.md](UI_GUIDE.md)** (mapa ekranów, zasady, czego nie robić).
 
 | Ekran | Telefon | Desktop |
 | :--- | :--- | :--- |
@@ -24,9 +26,7 @@ Interaktywny prototyp: https://claude.ai/artifact/UHzWL2uCYZhz1JscS3Xvne
 
 ### Styl
 
-- Ciemne tło `#0F1115`, karty `#181B21`, obramowania `#2C313A`.
-- Akcent zielony `#5BD69B` (seria, główne akcje), niebieski `#8AB4FF` (wsparcie).
-- Fonty: Bricolage Grotesque (nagłówki, liczby), Inter (tekst). Ikony: Lucide.
+Ciemny motyw z zielonym akcentem (`#5BD69B`) i niebieskim kolorem wsparcia (`#8AB4FF`), fonty Bricolage Grotesque i Inter, ikony Lucide. Pełny opis tokenów i komponentów: [docs/design/DESIGN_SYSTEM.md](../design/DESIGN_SYSTEM.md).
 
 ## Wcześniejsze podejścia
 

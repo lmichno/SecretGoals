@@ -150,3 +150,5 @@ Decyzje architektoniczne (stack, warstwy, API, logowanie, model danych) są w
 ## Prototyp UI
 
 Aktualny prototyp interfejsu (telefon i desktop: Cele, Społeczność, Profil) opisuje [docs/prototypes/README.md](docs/prototypes/README.md).
+
+Frontend budujemy według [docs/prototypes/UI_GUIDE.md](docs/prototypes/UI_GUIDE.md) (zrzuty ekranów, zasady) i [docs/design/DESIGN_SYSTEM.md](docs/design/DESIGN_SYSTEM.md) (motyw w `client/src/index.css`, komponenty w `client/src/components/ui`).
