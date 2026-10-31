@@ -1,3 +1,8 @@
+// Model danych zgodny z ADR-011 (docs/ADR.md).
+// Zmiany schematu tylko przez `npm run prisma:migrate -- --name <opis>` (ADR-010).
+// SQLite nie obsługuje enumów, więc pola typu wyliczeniowego to stringi (ADR-004);
+// dozwolone wartości opisują komentarze i sprawdza walidacja w kontrolerach.
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
@@ -8,24 +13,119 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  alias     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  goals     Goal[]
+  id           String   @id @default(uuid())
+  /// Tylko do logowania. Nigdy nie zwracamy go innym użytkownikom (ADR-007).
+  email        String?  @unique
+  /// Hash bcrypt. Pusty dla kont założonych przez Google/Facebook (ADR-016).
+  passwordHash String?
+  /// Publiczny, generowany przez serwer, np. "CichyLis42".
+  alias        String   @unique
+  /// "user" | "team" (konto zespołu może dodawać poradniki)
+  role         String   @default("user")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  authAccounts AuthAccount[]
+  goals        Goal[]
+  posts        Post[]
+  comments     Comment[]
+  supports     Support[]
+}
+
+model AuthAccount {
+  id             String   @id @default(uuid())
+  userId         String
+  /// "google" | "facebook"
+  provider       String
+  providerUserId String
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUserId])
+  @@index([userId])
 }
 
 model Goal {
   id          String    @id @default(uuid())
+  userId      String
   title       String
   description String?
-  isPublic    Boolean   @default(true)
+  /// "daily_streak" | "amount" | "weekly_count"
+  type        String    @default("daily_streak")
+  category    String?
+  targetValue Float?
   targetDate  DateTime?
-  completed   Boolean   @default(false)
-  streak      Int       @default(0)
+  isPublic    Boolean   @default(true)
+  /// "active" | "completed" | "archived"
+  status      String    @default("active")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  userId      String?
-  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progressEntries ProgressEntry[]
+  posts           Post[]
+
+  @@index([userId])
+  @@index([category, isPublic])
+}
+
+model ProgressEntry {
+  id        String   @id @default(uuid())
+  goalId    String
+  value     Float    @default(1)
+  /// Komentarz do postępu (US03, scenariusz 2)
+  note      String?
+  /// true = meldunek widoczny w feedzie (tworzy Post typu "progress")
+  isShared  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  goal  Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  posts Post[]
+
+  @@index([goalId, createdAt])
+}
+
+model Post {
+  id              String   @id @default(uuid())
+  authorId        String
+  /// "goal" | "progress" | "milestone" | "guide"
+  type            String
+  goalId          String?
+  progressEntryId String?
+  content         String?
+  createdAt       DateTime @default(now())
+
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  goal          Goal?          @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  progressEntry ProgressEntry? @relation(fields: [progressEntryId], references: [id], onDelete: Cascade)
+  comments      Comment[]
+  supports      Support[]
+
+  @@index([createdAt])
+  @@index([type, createdAt])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([postId, createdAt])
+}
+
+model Support {
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([postId, userId])
 }

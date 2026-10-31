@@ -1,34 +1,27 @@
 import type { Request, Response } from 'express'
+import { getAuthUserId } from '../middleware/requireAuth.js'
 import * as goalsService from '../services/goalsService.js'
+import { HttpError } from '../utils/httpError.js'
 
-export async function listGoals(_req: Request, res: Response) {
-  try {
-    const goals = await goalsService.findAllGoals()
-    res.json(goals)
-  } catch (error) {
-    console.error('Błąd pobierania celów:', error)
-    res.status(500).json({ error: 'Nie udało się pobrać celów' })
-  }
+/** GET /api/goals: cele zalogowanego użytkownika */
+export async function listGoals(req: Request, res: Response) {
+  const goals = await goalsService.findGoalsByUser(getAuthUserId(req))
+  res.json(goals)
 }
 
+/** POST /api/goals: właściciel zawsze z tokenu, nigdy z body (ADR-008) */
 export async function createGoal(req: Request, res: Response) {
-  try {
-    const { title, description, isPublic, targetDate } = req.body as Record<string, unknown>
-    if (typeof title !== 'string' || !title.trim()) {
-      res.status(400).json({ error: 'Tytuł celu jest wymagany' })
-      return
-    }
-
-    const goal = await goalsService.createGoal({
-      title: title.trim(),
-      description: typeof description === 'string' ? description : undefined,
-      isPublic: typeof isPublic === 'boolean' ? isPublic : undefined,
-      targetDate: typeof targetDate === 'string' ? new Date(targetDate) : null,
-    })
-
-    res.status(201).json(goal)
-  } catch (error) {
-    console.error('Błąd tworzenia celu:', error)
-    res.status(500).json({ error: 'Nie udało się utworzyć celu' })
+  const { title, description, isPublic, targetDate } = req.body as Record<string, unknown>
+  if (typeof title !== 'string' || !title.trim()) {
+    throw new HttpError(400, 'Popraw zaznaczone pola', { title: 'Tytuł celu jest wymagany' })
   }
+
+  const goal = await goalsService.createGoal(getAuthUserId(req), {
+    title: title.trim(),
+    description: typeof description === 'string' ? description : undefined,
+    isPublic: typeof isPublic === 'boolean' ? isPublic : undefined,
+    targetDate: typeof targetDate === 'string' ? new Date(targetDate) : null,
+  })
+
+  res.status(201).json(goal)
 }

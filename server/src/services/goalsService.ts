@@ -7,15 +7,17 @@ export interface CreateGoalInput {
   targetDate?: Date | null
 }
 
-export function findAllGoals() {
+export function findGoalsByUser(userId: string) {
   return prisma.goal.findMany({
+    where: { userId },
     orderBy: { createdAt: 'desc' },
   })
 }
 
-export function createGoal(input: CreateGoalInput) {
+export function createGoal(userId: string, input: CreateGoalInput) {
   return prisma.goal.create({
     data: {
+      userId,
       title: input.title,
       description: input.description,
       isPublic: input.isPublic ?? true,

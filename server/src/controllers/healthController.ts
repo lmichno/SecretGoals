@@ -10,11 +10,8 @@ export async function getHealth(_req: Request, res: Response) {
       timestamp: new Date().toISOString(),
     })
   } catch (error) {
-    console.error('Database connection error:', error)
-    res.status(500).json({
-      status: 'error',
-      message: 'Błąd połączenia z bazą SQLite',
-      error: error instanceof Error ? error.message : String(error),
-    })
+    // Szczegóły tylko w logach serwera (ADR-006)
+    console.error('Błąd połączenia z bazą:', error)
+    res.status(500).json({ status: 'error', error: 'Błąd połączenia z bazą SQLite' })
   }
 }

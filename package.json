@@ -10,6 +10,8 @@
     "build": "npm run build --prefix client",
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
     "prisma:studio": "npm run prisma:studio --prefix server",
+    "prisma:migrate": "npm run prisma:migrate --prefix server",
+    "prisma:seed": "npm run prisma:seed --prefix server",
     "prisma:push": "npm run prisma:push --prefix server",
     "prisma:generate": "npm run prisma:generate --prefix server",
     "lint": "oxlint",
