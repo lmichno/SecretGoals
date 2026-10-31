@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Bell, BookOpen, Check, Flame, Heart, RotateCcw, Target } from 'lucide-react'
+import {
+  AlertTriangle,
+  Bell,
+  BookOpen,
+  Check,
+  Flame,
+  Heart,
+  LogOut,
+  RotateCcw,
+  Target,
+} from 'lucide-react'
 import {
   Avatar,
   Badge,
@@ -8,28 +18,31 @@ import {
   GoalPill,
   IconButton,
   IconTile,
-  InfoNote,
   Overline,
   ProgressBar,
-  SegmentedControl,
   StatTile,
-  TextField,
 } from './components/ui'
+import { AuthProvider } from './context/AuthProvider'
+import { useAuth } from './hooks/useAuth'
+import { AuthPage } from './pages/AuthPage'
 
 interface ServerStatus {
   status: 'ok' | 'error'
   message: string
 }
 
-type AuthMode = 'login' | 'register'
-
-// Tymczasowy ekran startowy: status API i podgląd komponentów UI z motywu.
-// Wygląd docelowych ekranów: docs/prototypes/UI_GUIDE.md
-function App() {
+function AppContent() {
+  const {
+    user,
+    loading: authLoading,
+    logout,
+    sessionError,
+    retrySessionCheck,
+    loggingOut,
+  } = useAuth()
   const [serverStatus, setServerStatus] = useState<ServerStatus | null>(null)
   const [loading, setLoading] = useState(true)
   const [goal, setGoal] = useState(0)
-  const [mode, setMode] = useState<AuthMode>('login')
 
   useEffect(() => {
     fetch('/api/health')
@@ -44,6 +57,45 @@ function App() {
         setLoading(false)
       })
   }, [])
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg text-text">
+        <p className="text-body text-muted">Sprawdzanie sesji użytkownika...</p>
+      </div>
+    )
+  }
+
+  if (sessionError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg px-5 py-6 text-text">
+        <div className="w-full max-w-md">
+          <Card className="items-center text-center">
+            <IconTile size="xl" className="border border-danger-border bg-surface-2 text-danger">
+              <AlertTriangle size={32} />
+            </IconTile>
+            <div className="flex flex-col gap-1.5">
+              <h1 className="m-0 font-sans text-title font-bold">Problem z połączeniem</h1>
+              <p className="m-0 text-body text-muted">{sessionError}</p>
+            </div>
+            <Button
+              variant="primary"
+              size="lg"
+              block
+              icon={<RotateCcw size={18} />}
+              onClick={retrySessionCheck}
+            >
+              Spróbuj ponownie
+            </Button>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <AuthPage />
+  }
 
   const goals = [
     { name: 'Bez nikotyny', badge: '18 dni' },
@@ -60,13 +112,34 @@ function App() {
           </IconTile>
           <div className="flex flex-col">
             <span className="font-display text-title font-extrabold">Secret Goals</span>
-            <span className="text-caption text-muted">podgląd motywu (dev)</span>
+            <span className="text-caption text-muted">Twoje cele i nawyki</span>
           </div>
         </div>
         <IconButton label="Powiadomienia">
           <Bell size={20} />
         </IconButton>
       </header>
+
+      <Card>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Avatar alias={user.alias} tone="accent" size="md" />
+            <div className="flex flex-col">
+              <Overline accent>Twój anonimowy alias</Overline>
+              <span className="text-label-lg font-bold">{user.alias}</span>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            icon={<LogOut size={16} />}
+            onClick={logout}
+            disabled={loggingOut}
+          >
+            {loggingOut ? 'Wylogowywanie...' : 'Wyloguj'}
+          </Button>
+        </div>
+      </Card>
 
       <Card>
         <Overline>Status połączenia z API</Overline>
@@ -145,27 +218,14 @@ function App() {
           Wspieram
         </Button>
       </Card>
-
-      <Card>
-        <SegmentedControl
-          label="Logowanie lub rejestracja"
-          value={mode}
-          onChange={setMode}
-          options={[
-            { value: 'login', label: 'Logowanie' },
-            { value: 'register', label: 'Rejestracja' },
-          ]}
-        />
-        <TextField label="E-mail" type="email" placeholder="ty@przyklad.pl" autoComplete="email" />
-        <Button size="xl" block>
-          {mode === 'login' ? 'Zaloguj się' : 'Załóż konto'}
-        </Button>
-        <InfoNote>
-          E-mail służy tylko do logowania. Nigdy nie pokazujemy go innym użytkownikom.
-        </InfoNote>
-      </Card>
     </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  )
+}
