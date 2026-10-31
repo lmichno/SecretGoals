@@ -27,7 +27,7 @@ SecretGoals/
 │       ├── App.tsx
 │       └── main.tsx
 ├── server/                 # Backend (Express)
-│   ├── prisma/             # Schemat bazy danych (schema.prisma)
+│   ├── prisma/             # Schemat bazy (schema.prisma), migracje, seed.ts
 │   └── src/
 │       ├── controllers/    # Logika obsługi żądań
 │       ├── middleware/     # Middleware Express (np. autoryzacja)
@@ -65,7 +65,19 @@ npm install --prefix client
 
 `npm install` w głównym folderze automatycznie instaluje hook Git (Husky).
 
-### 2. Uruchomienie aplikacji deweloperskiej
+### 2. Konfiguracja i baza danych
+
+Skopiuj `server/.env.example` do `server/.env` i ustaw własny `JWT_SECRET` (bez niego serwer się nie uruchomi).
+Potem utwórz lokalną bazę z migracji i załaduj dane testowe:
+
+```bash
+npm run prisma:migrate
+npm run prisma:seed
+```
+
+Seed tworzy konto demo `demo@secretgoals.pl` / `demo1234`. Po pobraniu z repozytorium nowych migracji wystarczy ponownie `npm run prisma:migrate`.
+
+### 3. Uruchomienie aplikacji deweloperskiej
 
 W głównym folderze:
 
@@ -82,20 +94,22 @@ Polecenie to równolegle uruchamia:
 
 ## Przydatne polecenia
 
-| Polecenie               | Opis                                                      |
-| :---------------------- | :-------------------------------------------------------- |
-| `npm run dev`           | Uruchamia jednocześnie backend i frontend                 |
-| `npm run dev:server`    | Uruchamia tylko backend Express                           |
-| `npm run dev:client`    | Uruchamia tylko frontend React (Vite)                     |
-| `npm run build`         | Sprawdza typy i buduje produkcyjną wersję frontendu       |
-| `npm run lint`          | Sprawdza cały kod linterem (Oxlint)                       |
-| `npm run lint:fix`      | Poprawia automatycznie to, co linter potrafi naprawić     |
-| `npm run format`        | Formatuje cały projekt Prettierem                         |
-| `npm run format:check`  | Sprawdza formatowanie bez zmieniania plików               |
-| `npm run typecheck`     | Sprawdza typy TypeScript w serwerze i kliencie            |
-| `npm run check`         | Lint + formatowanie + typy (np. przed oddaniem zadania)   |
-| `npm run prisma:studio` | Otwiera graficzny interfejs Prisma Studio dla bazy SQLite |
-| `npm run prisma:push`   | Synchronizuje schemat Prisma z bazą SQLite (`dev.db`)     |
+| Polecenie                | Opis                                                                                               |
+| :----------------------- | :------------------------------------------------------------------------------------------------- |
+| `npm run dev`            | Uruchamia jednocześnie backend i frontend                                                          |
+| `npm run dev:server`     | Uruchamia tylko backend Express                                                                    |
+| `npm run dev:client`     | Uruchamia tylko frontend React (Vite)                                                              |
+| `npm run build`          | Sprawdza typy i buduje produkcyjną wersję frontendu                                                |
+| `npm run lint`           | Sprawdza cały kod linterem (Oxlint)                                                                |
+| `npm run lint:fix`       | Poprawia automatycznie to, co linter potrafi naprawić                                              |
+| `npm run format`         | Formatuje cały projekt Prettierem                                                                  |
+| `npm run format:check`   | Sprawdza formatowanie bez zmieniania plików                                                        |
+| `npm run typecheck`      | Sprawdza typy TypeScript w serwerze i kliencie                                                     |
+| `npm run check`          | Lint + formatowanie + typy (np. przed oddaniem zadania)                                            |
+| `npm run prisma:studio`  | Otwiera graficzny interfejs Prisma Studio dla bazy SQLite                                          |
+| `npm run prisma:migrate` | Tworzy/aktualizuje bazę z migracji; po zmianie schematu: `npm run prisma:migrate -- --name <opis>` |
+| `npm run prisma:seed`    | Ładuje dane testowe (`server/prisma/seed.ts`)                                                      |
+| `npm run prisma:push`    | Tylko do jednorazowych eksperymentów (bez historii zmian)                                          |
 
 ---
 
@@ -141,6 +155,19 @@ Przed każdym commitem Husky uruchamia `lint-staged`, który na zmienionych plik
 - Gałąź główna: `main`. Nowe funkcje na gałęziach `feature/<nazwa>`, poprawki na `fix/<nazwa>`.
 - Komunikaty commitów w trybie rozkazującym, krótko i konkretnie (np. „Dodaj endpoint listy celów”).
 - Pliki `.env` i bazy `*.db` nie trafiają do repozytorium (`.gitignore`), wzór konfiguracji jest w `server/.env.example`.
+
+## API logowania
+
+Uwierzytelnianie opisuje ADR-008: token JWT w ciasteczku `httpOnly` (`sg_token`), więc klient nie przechowuje tokenu sam, wystarczy wysyłać żądania na `/api` (proxy Vite).
+
+| Metoda i ścieżka          | Body                  | Odpowiedź                                                                     |
+| :------------------------ | :-------------------- | :---------------------------------------------------------------------------- |
+| `POST /api/auth/register` | `{ email, password }` | `201 { id, alias, email }` + ciasteczko; `400` błędy pól, `409` zajęty e-mail |
+| `POST /api/auth/login`    | `{ email, password }` | `200 { id, alias, email }` + ciasteczko; `401` zły e-mail lub hasło           |
+| `POST /api/auth/logout`   | brak                  | `204`, czyści ciasteczko                                                      |
+| `GET /api/auth/me`        | brak                  | `200 { id, alias, email }` albo `401`                                         |
+
+Błędy mają kształt `{ "error": "...", "fields": { "email": "..." } }` (ADR-006). Trasy wymagające logowania (np. `/api/goals`) mają middleware `requireAuth`, a id użytkownika w kontrolerze daje `getAuthUserId(req)`.
 
 ## Decyzje architektoniczne
 

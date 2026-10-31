@@ -25,12 +25,12 @@ danych) zapisujemy tutaj _przed_ ich wdrożeniem.
 | ADR-003 | Backend: Node.js + Express                                        | Zaakceptowana | Tak       | Deweloperski      |
 | ADR-004 | Baza danych: SQLite + Prisma ORM                                  | Zaakceptowana | Tak       | Logiczny, Dane    |
 | ADR-005 | Warstwy backendu: routes → controllers → services → Prisma        | Zaakceptowana | Tak       | Deweloperski      |
-| ADR-006 | Kontrakt REST API pod `/api` w formacie JSON                      | Zaakceptowana | Częściowo | Procesu           |
-| ADR-007 | Anonimowość: alias publiczny, e-mail tylko do logowania           | Zaakceptowana | Nie       | Logiczny, Dane    |
-| ADR-008 | Uwierzytelnianie: hasło (bcrypt) + JWT w ciasteczku httpOnly      | Zaakceptowana | Nie       | Procesu           |
+| ADR-006 | Kontrakt REST API pod `/api` w formacie JSON                      | Zaakceptowana | Tak       | Procesu           |
+| ADR-007 | Anonimowość: alias publiczny, e-mail tylko do logowania           | Zaakceptowana | Częściowo | Logiczny, Dane    |
+| ADR-008 | Uwierzytelnianie: hasło (bcrypt) + JWT w ciasteczku httpOnly      | Zaakceptowana | Tak       | Procesu           |
 | ADR-009 | Walidacja danych na serwerze i w kliencie                         | Zaakceptowana | Częściowo | Procesu           |
-| ADR-010 | Zmiany schematu bazy przez migracje Prisma                        | Zaakceptowana | Nie       | Dane              |
-| ADR-011 | Model danych i feed oparty na tabeli `Post`                       | Zaakceptowana | Nie       | Logiczny, Dane    |
+| ADR-010 | Zmiany schematu bazy przez migracje Prisma                        | Zaakceptowana | Tak       | Dane              |
+| ADR-011 | Model danych i feed oparty na tabeli `Post`                       | Zaakceptowana | Częściowo | Logiczny, Dane    |
 | ADR-012 | Dopasowanie „rówieśnika” (US05) po kategorii celu                 | Zaakceptowana | Nie       | Logiczny, Procesu |
 | ADR-013 | Frontend: routing, stan i komunikacja z API                       | Zaakceptowana | Nie       | Deweloperski      |
 | ADR-014 | Responsywny web zamiast aplikacji mobilnej                        | Zaakceptowana | Tak       | Fizyczny          |
@@ -286,8 +286,8 @@ w innym kształcie, a klient musiałby obsługiwać każdy przypadek osobno.
 - (+) Frontend ma jedną funkcję obsługi błędów (ADR-013).
 - (+) API łatwo opisać na diagramach sekwencji i komunikacji.
 - (+) Stronicowanie kursorem pasuje do feedu przewijanego jak rolki (dociąganie kolejnych wpisów).
-- (−) Obecny `healthController` zwraca w błędzie pole `error: error.message`. Poprawimy to przy
-  wprowadzaniu middleware błędów.
+- (+) Middleware `errorHandler` (`server/src/middleware/errorHandler.ts`) i klasa `HttpError`
+  pilnują jednego formatu błędów w całym API.
 
 ---
 
