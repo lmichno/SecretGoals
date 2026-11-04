@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Cele: błąd wczytywania – mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1115}
+a{color:#8BE5B8}a:hover{color:#B9F0D2}
+.sg-scroll::-webkit-scrollbar{display:none}
+.sg-scroll{scrollbar-width:none}
+@keyframes sg-spin{to{transform:rotate(360deg)}}
+.sg-spin{animation:sg-spin 0.9s linear infinite}
+.sg-input:focus{outline:2px solid #5BD69B;outline-offset:1px;border-color:transparent}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #F3F1EC; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 10px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <div style="width: 36px; height: 36px; border-radius: 12px; background: #2A2F3A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #8BE5B8">AF</div>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 12px; color: #A3A9B5">Twój alias</span>
+      <span style="font-size: 15px; font-weight: 600">Anon_Falcon92</span>
+    </div>
+  </div>
+  <button aria-label="Powiadomienia" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid #2C313A; background: #181B21; color: #F3F1EC; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg></button>
+</header>
+<main class="sg-scroll" style="flex: 1; overflow-y: auto; padding: 6px 20px 110px; display: flex; flex-direction: column; gap: 14px">
+<section style="background: #181B21; border: 1px solid #2C313A; border-radius: 24px; padding: 32px 20px; display: flex; flex-direction: column; gap: 16px; align-items: center">
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 420px">
+  <div style="width: 56px; height: 56px; border-radius: 18px; background: #2A1A1C; color: #F2A7A7; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></div>
+  <h2 style="margin: 0; font-family: 'Bricolage Grotesque', Inter, sans-serif; font-size: 22px; line-height: 1.15; font-weight: 700">Nie udało się wczytać celów</h2>
+  <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #A3A9B5">Sprawdź połączenie z internetem i spróbuj ponownie. Twoje serie są bezpieczne.</p>
+  <a href="../../v2-ui/Main.dc.html" style="width: 100%; box-sizing: border-box; height: 52px; padding: 0 16px; border-radius: 14px; border: 1px solid #3A404B; background: #22262E; color: #F3F1EC; font-weight: 600; font-family: inherit; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; "><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg><span>Spróbuj ponownie</span></a>
+</div>
+</section>
+</main>
+<nav aria-label="Główna nawigacja" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #12151A; border-top: 1px solid #2C313A; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; box-sizing: border-box">
+  <a href="../../v2-ui/Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #5BD69B; font-size: 12px; font-weight: 600"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg><span>Cele</span></a>
+  <a href="../../v2-ui/Community.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Społeczność</span></a>
+  <a href="../../v2-ui/Profile.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 72px; min-height: 48px; text-decoration: none; color: #A3A9B5; font-size: 12px; font-weight: 500"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Profil</span></a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
