@@ -37,6 +37,7 @@ danych) zapisujemy tutaj _przed_ ich wdrożeniem.
 | ADR-015 | Jakość kodu: Oxlint, Prettier, Husky i review przez Pull Request  | Zaakceptowana | Tak       | Deweloperski      |
 | ADR-016 | Logowanie przez Google i Facebook (OAuth 2.0)                     | Zaakceptowana | Nie       | Procesu, Dane     |
 | ADR-017 | TypeScript na frontendzie i backendzie                            | Zaakceptowana | Tak       | Deweloperski      |
+| ADR-018 | Testy API: Vitest + Supertest na osobnej bazie                    | Zaakceptowana | Tak       | Deweloperski      |
 
 Wymagania, z których wynikają decyzje (widok „+1”, czyli przypadki użycia), są w
 [`docs/user-stories_and_use-case/user_stories.md`](user-stories_and_use-case/user_stories.md)
@@ -412,6 +413,10 @@ sama walidacja w kliencie nie wystarczy.
   polem). Walidacja w kliencie nie zastępuje serwerowej.
 - Teksty przycinamy (`trim`) przed sprawdzeniem, więc „ ” to pusty komentarz.
 - Limity długości: tytuł celu do 100 znaków, opis do 1000, komentarz do 500.
+- Reguły celu (US02, uzupełnione 2026-11-08): wartość docelowa zależy od typu (seria dzienna bez
+  wartości, cel kwotowy w PLN większy od 0, licznik tygodniowy 1–7), termin w formacie
+  `YYYY-MM-DD` od dziś (czas polski) do 5 lat naprzód, najwyżej 5 aktywnych celów na konto (`409`).
+  Pełny kontrakt: [`docs/api/goals.md`](api/goals.md).
 - Na razie walidację piszemy ręcznie (proste `if`). Gdy reguł przybędzie, wprowadzimy bibliotekę
   schematów (np. Zod) osobnym ADR-em.
 
@@ -549,7 +554,7 @@ Zasady modelu:
 
 ## ADR-012: Dopasowanie „rówieśnika” (US05) po kategorii celu
 
-**Status:** Zaakceptowana · **Data:** 2026-10-29
+**Status:** Zaakceptowana · **Data:** 2026-10-29 (uzupełniona 2026-11-08)
 
 ### Kontekst
 
@@ -558,8 +563,10 @@ Musieliśmy zdefiniować „podobieństwo” tak, żeby dało się je zaimplemen
 
 ### Decyzja
 
-- Przy tworzeniu celu użytkownik wybiera **kategorię** z zamkniętej listy (np. `nalogi`,
-  `zdrowie`, `finanse`, `nauka`, `praca`, `inne`), zapisywaną w `Goal.category`.
+- Przy tworzeniu celu użytkownik wybiera **kategorię** z zamkniętej listy, zapisywaną w
+  `Goal.category`. Przy US02 przyjęliśmy listę z prototypu v2: `nalog`, `finanse`, `sport`,
+  `kariera`, `zdrowie`, `inne` (jedno źródło na serwerze: `server/src/domain/goalRules.ts`).
+  Gdy klient nie poda kategorii, serwer zapisuje `inne`.
 - Rówieśnik to **publiczny cel innego użytkownika w tej samej kategorii** (i tego samego typu, jeśli
   taki istnieje), z aktywnością (wpis postępu) w ostatnich 7 dniach. Spośród pasujących wybieramy
   losowo.
@@ -808,9 +815,50 @@ kompilacji, zanim trafią do PR.
 
 ---
 
+## ADR-018: Testy API: Vitest + Supertest na osobnej bazie
+
+**Status:** Zaakceptowana · **Data:** 2026-11-08
+
+### Kontekst
+
+Przy US01 odłożyliśmy testy automatyczne na później. Od US02 kryteria akceptacji zawierają reguły,
+które łatwo zepsuć przy kolejnych historiach (brak nazwy celu, wartości zależne od typu, terminy,
+limit aktywnych celów, post w feedzie tylko dla celu publicznego). Ręczne sprawdzanie każdej reguły
+po każdej zmianie zajmuje dużo czasu i łatwo coś pominąć.
+
+### Decyzja
+
+- Testujemy API serwera przez HTTP: **Vitest** (runner, zgodny z TypeScript i ESM bez dodatkowej
+  konfiguracji) + **Supertest** (żądania do aplikacji Express bez uruchamiania portu).
+- Konfiguracja Express jest w `server/src/app.ts`, a `server/src/index.ts` tylko nasłuchuje na
+  porcie, żeby testy mogły importować aplikację.
+- Testy korzystają z osobnej bazy `server/prisma/test.db`. Przed uruchomieniem skrypt usuwa ten
+  plik i tworzy bazę od zera przez `prisma migrate deploy` (ADR-010), więc `dev.db` jest bezpieczna.
+  Przed każdym testem czyścimy dane.
+- Każdy scenariusz z kryteriów akceptacji ma co najmniej jeden test (np. US02 scenariusz 2: cel bez
+  nazwy zwraca `400` i nie trafia do bazy). Testy są w `server/test/`.
+- Uruchamiamy je `npm test` (w głównym folderze lub w `server/`) przed oddaniem PR.
+
+### Rozważone alternatywy
+
+- **Jest:** popularny, ale wymaga dodatkowej konfiguracji dla TypeScriptu i modułów ESM.
+- **Tylko ręczne testy (Postman, plik `.http`):** dobre do pokazania API, ale nie wyłapią
+  regresji. Plik `server/requests/goals.http` zostawiamy jako uzupełnienie.
+- **Baza w pamięci albo mocki Prismy:** szybsze, ale nie sprawdzają prawdziwych zapytań i migracji.
+
+### Konsekwencje
+
+- (+) Kryteria akceptacji są sprawdzane automatycznie, a wynik testów można pokazać w sprawozdaniu.
+- (+) Testy przechodzą przez wszystkie warstwy (ADR-005) i prawdziwą bazę SQLite.
+- (−) Dochodzą zależności deweloperskie (`vitest`, `supertest`) i trzeba pisać testy do nowych
+  endpointów.
+- (−) Testy korzystają z jednej bazy, więc pliki testów działają po kolei, a nie równolegle.
+
+---
+
 ## Poza zakresem obecnych decyzji
 
-Świadomie odkładamy na później (osobne ADR-y, gdy staną się potrzebne): testy automatyczne,
+Świadomie odkładamy na później (osobne ADR-y, gdy staną się potrzebne): testy frontendu,
 wdrożenie aplikacji na serwer, konteneryzację i CI/CD, przechowywanie plików multimedialnych (np.
 wideo do rolek), reset hasła i weryfikację e-maila, moderację treści i zgłaszanie nadużyć oraz
 powiadomienia o nawykach.

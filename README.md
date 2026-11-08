@@ -105,6 +105,7 @@ Polecenie to równolegle uruchamia:
 | `npm run format`         | Formatuje cały projekt Prettierem                                                                  |
 | `npm run format:check`   | Sprawdza formatowanie bez zmieniania plików                                                        |
 | `npm run typecheck`      | Sprawdza typy TypeScript w serwerze i kliencie                                                     |
+| `npm test`               | Uruchamia testy API serwera (Vitest + Supertest, osobna baza `test.db`, ADR-018)                   |
 | `npm run check`          | Lint + formatowanie + typy (np. przed oddaniem zadania)                                            |
 | `npm run prisma:studio`  | Otwiera graficzny interfejs Prisma Studio dla bazy SQLite                                          |
 | `npm run prisma:migrate` | Tworzy/aktualizuje bazę z migracji; po zmianie schematu: `npm run prisma:migrate -- --name <opis>` |

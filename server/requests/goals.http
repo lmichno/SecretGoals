@@ -1,0 +1,53 @@
+# Ręczne żądania do API celów (US02). Otwórz w VS Code z rozszerzeniem REST Client
+# (humao.rest-client) i kliknij "Send Request" nad żądaniem. Serwer: npm run dev:server.
+# Ciasteczko sg_token z logowania REST Client zapamiętuje sam. Kontrakt: docs/api/goals.md
+
+@api = http://localhost:5000/api
+
+### Logowanie kontem demo (seed)
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{ "email": "demo@secretgoals.pl", "password": "demo1234" }
+
+### US02 sc. 1: nowy cel publiczny (tworzy też post w feedzie)
+# @name newGoal
+POST {{api}}/goals
+Content-Type: application/json
+
+{
+  "title": "Bieganie 3 razy w tygodniu",
+  "description": "Zaczynam od zera, po kontuzji kolana.",
+  "category": "sport",
+  "type": "weekly_count",
+  "targetValue": 3,
+  "targetDate": "2027-03-01",
+  "isPublic": true
+}
+
+### Cel kwotowy, prywatny
+POST {{api}}/goals
+Content-Type: application/json
+
+{ "title": "Spłata karty kredytowej", "category": "finanse", "type": "amount", "targetValue": 4500, "isPublic": false }
+
+### US02 sc. 2: brak nazwy -> 400, fields.title
+POST {{api}}/goals
+Content-Type: application/json
+
+{ "title": "   ", "category": "zdrowie" }
+
+### Błędne pola naraz -> 400 z kilkoma polami
+POST {{api}}/goals
+Content-Type: application/json
+
+{ "title": "Test", "category": "nauka", "type": "amount", "targetValue": 0, "targetDate": "2026-02-30" }
+
+### Lista moich celów
+GET {{api}}/goals
+
+### Jeden cel (id z odpowiedzi "newGoal")
+GET {{api}}/goals/{{newGoal.response.body.id}}
+
+### Nieistniejący cel -> 404
+GET {{api}}/goals/nie-ma-takiego
