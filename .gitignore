@@ -14,6 +14,8 @@ dist-ssr/
 !.env.example
 
 # SQLite Databases & Prisma
+# Klient Prisma 7 generowany przy npm install (prisma generate)
+server/src/generated/
 *.db
 *.db-journal
 dev.db

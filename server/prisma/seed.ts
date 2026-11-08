@@ -1,9 +1,7 @@
 // Dane testowe do demonstracji (ADR-010). Uruchomienie: npm run prisma:seed
 // Skrypt można odpalać wielokrotnie: konto demo jest tworzone tylko raz.
 import { hash } from 'bcryptjs'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '../src/prisma.js'
 
 const DEMO_EMAIL = 'demo@secretgoals.pl'
 const DEMO_PASSWORD = 'demo1234'

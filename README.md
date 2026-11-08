@@ -67,7 +67,7 @@ npm install --prefix client
 
 ### 2. Konfiguracja i baza danych
 
-Skopiuj `server/.env.example` do `server/.env` i ustaw własny `JWT_SECRET` (bez niego serwer się nie uruchomi).
+Skopiuj `server/.env.example` do `server/.env` i ustaw własny `JWT_SECRET` (bez niego serwer się nie uruchomi). `DATABASE_URL` ma być `"file:./prisma/dev.db"` (od Prisma 7 ścieżka jest liczona od folderu `server/`).
 Potem utwórz lokalną bazę z migracji i załaduj dane testowe:
 
 ```bash

@@ -158,7 +158,7 @@ TypeScripcie, więc chcieliśmy jednego języka w całym projekcie.
 
 ## ADR-004: Baza danych: SQLite + Prisma ORM
 
-**Status:** Zaakceptowana · **Data:** 2026-10-24
+**Status:** Zaakceptowana · **Data:** 2026-10-24 (uzupełniona 2026-11-08)
 
 ### Kontekst
 
@@ -169,8 +169,12 @@ danych.
 ### Decyzja
 
 - Wybraliśmy **SQLite** z plikiem `server/prisma/dev.db` (poza repozytorium, `.gitignore`).
-- Do bazy sięgamy wyłącznie przez **Prisma ORM** (`@prisma/client`). Schemat jest w
+- Do bazy sięgamy wyłącznie przez **Prisma ORM**. Schemat jest w
   `server/prisma/schema.prisma`, a jedna współdzielona instancja klienta w `server/src/prisma.ts`.
+- Od Prisma 7 (2026-11-08): adres bazy, ścieżka migracji i seed są w `server/prisma.config.ts`,
+  klient generuje się do `server/src/generated/prisma` (poza repozytorium, tworzy go
+  `npm install`), a z plikiem SQLite łączy się przez adapter `@prisma/adapter-better-sqlite3`.
+  `DATABASE_URL` jest liczony od folderu `server/` (`file:./prisma/dev.db`).
 - Identyfikatory rekordów to **UUID** (`@default(uuid())`), a nie kolejne liczby, żeby z adresu
   URL nie dało się odczytać liczby użytkowników ani zgadywać cudzych zasobów.
 - Surowych zapytań SQL (`$queryRaw`) używamy tylko wyjątkowo (np. w health checku).

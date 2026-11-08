@@ -13,6 +13,6 @@ export default function setup() {
   rmSync(`${TEST_DB}-journal`, { force: true })
   execSync('npx prisma migrate deploy', {
     stdio: 'pipe',
-    env: { ...process.env, DATABASE_URL: 'file:./test.db' },
+    env: { ...process.env, DATABASE_URL: 'file:./prisma/test.db' },
   })
 }

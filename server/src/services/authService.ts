@@ -1,6 +1,6 @@
 import { compare, hash, hashSync } from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '../generated/prisma/client.js'
 import { config } from '../config.js'
 import prisma from '../prisma.js'
 import { HttpError } from '../utils/httpError.js'

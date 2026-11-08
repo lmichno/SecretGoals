@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '../generated/prisma/client.js'
 import { MAX_ACTIVE_GOALS, type GoalCategory, type GoalType } from '../domain/goalRules.js'
 import prisma from '../prisma.js'
 import { HttpError } from '../utils/httpError.js'

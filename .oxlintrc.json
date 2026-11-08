@@ -24,12 +24,12 @@
     "import/no-unassigned-import": [
       "warn",
       {
-        "allow": ["**/*.css"]
+        "allow": ["**/*.css", "dotenv/config"]
       }
     ],
     "typescript/no-explicit-any": "error"
   },
-  "ignorePatterns": ["**/node_modules/**", "**/dist/**", "docs/**"],
+  "ignorePatterns": ["**/node_modules/**", "**/dist/**", "**/generated/**", "docs/**"],
   "overrides": [
     {
       "files": ["client/**/*.{ts,tsx}"],

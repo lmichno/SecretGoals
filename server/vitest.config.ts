@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     env: {
-      DATABASE_URL: 'file:./test.db',
+      DATABASE_URL: 'file:./prisma/test.db',
       JWT_SECRET: 'sekret-tylko-do-testow',
       NODE_ENV: 'test',
     },

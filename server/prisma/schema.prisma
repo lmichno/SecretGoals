@@ -3,13 +3,15 @@
 // SQLite nie obsługuje enumów, więc pola typu wyliczeniowego to stringi (ADR-004);
 // dozwolone wartości opisują komentarze i sprawdza walidacja w kontrolerach.
 
+// Adres bazy jest w prisma.config.ts (Prisma 7), a klient łączy się przez adapter
+// better-sqlite3 w src/prisma.ts.
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 model User {
