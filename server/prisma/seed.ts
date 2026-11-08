@@ -33,7 +33,9 @@ async function main() {
         title: 'Codzienne czytanie',
         description: '20 minut czytania każdego dnia',
         type: 'daily_streak',
-        category: 'nauka',
+        category: 'inne',
+        // Publiczny cel ma swój wpis w Społeczności (ADR-011), tak jak przy POST /api/goals
+        posts: { create: { type: 'goal', authorId: demo.id } },
       },
     })
   }

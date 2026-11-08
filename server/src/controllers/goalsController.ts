@@ -1,27 +1,25 @@
 import type { Request, Response } from 'express'
 import { getAuthUserId } from '../middleware/requireAuth.js'
 import * as goalsService from '../services/goalsService.js'
+import { parseGoalInput } from '../utils/goalValidation.js'
 import { HttpError } from '../utils/httpError.js'
 
-/** GET /api/goals: cele zalogowanego użytkownika */
+/** GET /api/goals: cele zalogowanego użytkownika (bez zarchiwizowanych) */
 export async function listGoals(req: Request, res: Response) {
   const goals = await goalsService.findGoalsByUser(getAuthUserId(req))
   res.json(goals)
 }
 
-/** POST /api/goals: właściciel zawsze z tokenu, nigdy z body (ADR-008) */
+/** GET /api/goals/:id: cudzy cel daje 404, żeby nie zdradzać, że istnieje */
+export async function getGoal(req: Request, res: Response) {
+  const goal = await goalsService.findOwnGoal(getAuthUserId(req), String(req.params.id))
+  if (!goal) throw new HttpError(404, 'Nie znaleziono celu')
+  res.json(goal)
+}
+
+/** POST /api/goals (US02): właściciel zawsze z tokenu, nigdy z body (ADR-008) */
 export async function createGoal(req: Request, res: Response) {
-  const { title, description, isPublic, targetDate } = req.body as Record<string, unknown>
-  if (typeof title !== 'string' || !title.trim()) {
-    throw new HttpError(400, 'Popraw zaznaczone pola', { title: 'Tytuł celu jest wymagany' })
-  }
-
-  const goal = await goalsService.createGoal(getAuthUserId(req), {
-    title: title.trim(),
-    description: typeof description === 'string' ? description : undefined,
-    isPublic: typeof isPublic === 'boolean' ? isPublic : undefined,
-    targetDate: typeof targetDate === 'string' ? new Date(targetDate) : null,
-  })
-
+  const input = parseGoalInput(req.body)
+  const goal = await goalsService.createGoal(getAuthUserId(req), input)
   res.status(201).json(goal)
 }

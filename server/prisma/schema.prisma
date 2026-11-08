@@ -51,10 +51,13 @@ model Goal {
   userId      String
   title       String
   description String?
-  /// "daily_streak" | "amount" | "weekly_count"
+  /// "daily_streak" | "amount" | "weekly_count" (lista w src/domain/goalRules.ts)
   type        String    @default("daily_streak")
+  /// "nalog" | "finanse" | "sport" | "kariera" | "zdrowie" | "inne"; API zapisuje "inne", gdy brak
   category    String?
+  /// null dla daily_streak, kwota w PLN dla amount, 1–7 razy w tygodniu dla weekly_count
   targetValue Float?
+  /// Sam dzień (YYYY-MM-DD z formularza), zapisany jako północ UTC
   targetDate  DateTime?
   isPublic    Boolean   @default(true)
   /// "active" | "completed" | "archived"
