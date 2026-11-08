@@ -19,6 +19,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "npm run typecheck --prefix server && npm run typecheck --prefix client",
+    "test": "npm run test --prefix server",
     "check": "npm run lint && npm run format:check && npm run typecheck",
     "prepare": "husky"
   },
