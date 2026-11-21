@@ -43,7 +43,7 @@ export const TYPE_LABELS: Record<GoalType, string> = {
 }
 
 /**
- * GET /api/goals: zwraca listę aktywnych i zakończonych celów zalogowanego użytkownika (US02)
+ * GET /api/goals: zwraca listę celów zalogowanego użytkownika, bez zarchiwizowanych (US02)
  */
 export function apiGetGoals(): Promise<Goal[]> {
   return apiRequest<Goal[]>('/api/goals', {

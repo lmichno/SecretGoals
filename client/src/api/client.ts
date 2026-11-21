@@ -17,6 +17,13 @@ interface ApiErrorPayload {
   fields?: Record<string, string>
 }
 
+type UnauthorizedHandler = () => void
+let unauthorizedHandler: UnauthorizedHandler | null = null
+
+export function setOnUnauthorized(handler: UnauthorizedHandler | null): void {
+  unauthorizedHandler = handler
+}
+
 function isApiErrorPayload(data: unknown): data is ApiErrorPayload {
   return typeof data === 'object' && data !== null
 }
@@ -34,15 +41,23 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
   const isJsonBody = body !== undefined && !(body instanceof FormData)
 
-  const response = await fetch(path, {
-    credentials: 'include',
-    headers: {
-      ...(isJsonBody ? { 'Content-Type': 'application/json' } : {}),
-      ...headers,
-    },
-    body: isJsonBody ? JSON.stringify(body) : (body as BodyInit | null | undefined),
-    ...restOptions,
-  })
+  let response: Response
+  try {
+    response = await fetch(path, {
+      credentials: 'include',
+      headers: {
+        ...(isJsonBody ? { 'Content-Type': 'application/json' } : {}),
+        ...headers,
+      },
+      body: isJsonBody ? JSON.stringify(body) : (body as BodyInit | null | undefined),
+      ...restOptions,
+    })
+  } catch {
+    throw new ApiError(
+      0,
+      'Nie udało się połączyć z serwerem. Sprawdź połączenie i spróbuj ponownie.'
+    )
+  }
 
   // 204 No Content
   if (response.status === 204) {
@@ -54,7 +69,14 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   const data: unknown = isJson ? await response.json() : await response.text()
 
   if (!response.ok) {
-    let message = 'Wystąpił błąd podczas komunikacji z serwerem'
+    if (response.status === 401) {
+      unauthorizedHandler?.()
+    }
+
+    let message =
+      response.status >= 500
+        ? 'Wystąpił błąd serwera. Spróbuj ponownie później.'
+        : 'Wystąpił błąd podczas komunikacji z serwerem'
     let fields: Record<string, string> | undefined
 
     if (isApiErrorPayload(data)) {

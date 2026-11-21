@@ -8,7 +8,7 @@ import {
   type LoginInput,
   type RegisterInput,
 } from '../api/auth'
-import { ApiError } from '../api/client'
+import { ApiError, setOnUnauthorized } from '../api/client'
 import { AuthContext, type AuthContextValue } from './authContext'
 
 interface AuthProviderProps {
@@ -38,6 +38,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const clearError = useCallback(() => {
     setError(null)
+  }, [])
+
+  useEffect(() => {
+    setOnUnauthorized(() => {
+      setUser(null)
+    })
+    return () => {
+      setOnUnauthorized(null)
+    }
   }, [])
 
   useEffect(() => {

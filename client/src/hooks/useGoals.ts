@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { apiGetGoals, type Goal } from '../api/goals'
 import { ApiError } from '../api/client'
 
@@ -13,6 +14,21 @@ export interface UseGoalsResult {
   refreshGoals: () => Promise<void>
 }
 
+function updateGoalsState(
+  data: Goal[],
+  setGoals: Dispatch<SetStateAction<Goal[]>>,
+  setSelectedGoalId: Dispatch<SetStateAction<string | null>>
+) {
+  setGoals(data)
+  if (data.length > 0) {
+    setSelectedGoalId((prev) =>
+      prev && data.some((g) => g.id === prev) ? prev : (data[0]?.id ?? null)
+    )
+  } else {
+    setSelectedGoalId(null)
+  }
+}
+
 /**
  * Hook zarządzający listą celów użytkownika (US02).
  * Pobiera cele z GET /api/goals i pozwala wybrać aktywny cel.
@@ -22,40 +38,6 @@ export function useGoals(enabled = true): UseGoalsResult {
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null)
   const [loading, setLoading] = useState(enabled)
   const [error, setError] = useState<string | null>(null)
-
-  const refreshGoals = useCallback(async () => {
-    if (!enabled) {
-      setLoading(false)
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-    try {
-      const data = await apiGetGoals()
-      setGoals(data)
-      if (data.length > 0) {
-        setSelectedGoalId((prev) => {
-          if (prev && data.some((g) => g.id === prev)) {
-            return prev
-          }
-          return data[0]?.id ?? null
-        })
-      } else {
-        setSelectedGoalId(null)
-      }
-    } catch (err: unknown) {
-      if (err instanceof ApiError && err.status === 401) {
-        setGoals([])
-        setSelectedGoalId(null)
-        return
-      }
-      const message = err instanceof Error ? err.message : 'Nie udało się pobrać listy Twoich celów'
-      setError(message)
-    } finally {
-      setLoading(false)
-    }
-  }, [enabled])
 
   useEffect(() => {
     if (!enabled) {
@@ -67,17 +49,7 @@ export function useGoals(enabled = true): UseGoalsResult {
     apiGetGoals()
       .then((data) => {
         if (!isMounted) return
-        setGoals(data)
-        if (data.length > 0) {
-          setSelectedGoalId((prev) => {
-            if (prev && data.some((g) => g.id === prev)) {
-              return prev
-            }
-            return data[0]?.id ?? null
-          })
-        } else {
-          setSelectedGoalId(null)
-        }
+        updateGoalsState(data, setGoals, setSelectedGoalId)
       })
       .catch((err: unknown) => {
         if (!isMounted) return
@@ -98,6 +70,30 @@ export function useGoals(enabled = true): UseGoalsResult {
 
     return () => {
       isMounted = false
+    }
+  }, [enabled])
+
+  const refreshGoals = useCallback(async () => {
+    if (!enabled) {
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await apiGetGoals()
+      updateGoalsState(data, setGoals, setSelectedGoalId)
+    } catch (err: unknown) {
+      if (err instanceof ApiError && err.status === 401) {
+        setGoals([])
+        setSelectedGoalId(null)
+        return
+      }
+      const message = err instanceof Error ? err.message : 'Nie udało się pobrać listy Twoich celów'
+      setError(message)
+    } finally {
+      setLoading(false)
     }
   }, [enabled])
 
