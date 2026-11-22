@@ -82,7 +82,7 @@ export function IconButton({
       type={type}
       aria-label={label}
       className={cn(
-        'inline-flex size-11 shrink-0 items-center justify-center rounded-control border border-border bg-surface text-text cursor-pointer hover:border-border-strong',
+        'inline-flex size-11 shrink-0 items-center justify-center rounded-control border border-border bg-surface text-text cursor-pointer hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-border',
         className
       )}
       {...rest}
