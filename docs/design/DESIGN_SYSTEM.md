@@ -74,6 +74,7 @@ dowolnym narzędziu Tailwinda: `bg-*`, `text-*`, `border-*`, `outline-*`, `fill-
 | :--------------- | :-------- | :------------------------------------------------------------------- |
 | `danger`         | `#F2A7A7` | tekst akcji niebezpiecznej („Wyloguj”), komunikat błędu pola         |
 | `danger-border`  | `#5A2E2E` | obramowanie przycisku „Wyloguj”, pola z błędem                       |
+| `danger-soft`    | `#2A1A1C` | tło kafelka ikony w stanie błędu („Nie udało się wczytać celów”)     |
 | `heat-mid`       | `#1E5A3E` | średni poziom w mapie aktywności (brak: `surface-2`, dużo: `accent`) |
 | `post-milestone` | `#173527` | tło wpisu „Kamień milowy” w feedzie                                  |
 | `post-guide`     | `#16273D` | tło wpisu „Poradnik”                                                 |
