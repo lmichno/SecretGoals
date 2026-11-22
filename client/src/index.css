@@ -47,6 +47,7 @@
   /* Akcja niebezpieczna (Wyloguj, usuń) */
   --color-danger: #f2a7a7;
   --color-danger-border: #5a2e2e;
+  --color-danger-soft: #2a1a1c; /* tło kafelka ikony w stanie błędu („Nie udało się wczytać celów”) */
 
   /* Mapa aktywności w profilu: brak = surface-2, mało = heat-mid, dużo = accent */
   --color-heat-mid: #1e5a3e;

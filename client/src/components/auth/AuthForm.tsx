@@ -1,5 +1,5 @@
 import { useState, useCallback, type FormEvent } from 'react'
-import { Eye, EyeOff, RotateCcw } from 'lucide-react'
+import { Eye, EyeOff, Lock, RotateCcw } from 'lucide-react'
 import { Avatar, Button, InfoNote, SegmentedControl, TextField } from '../ui'
 import { useAuth } from '../../hooks/useAuth'
 import type { AuthUser } from '../../api/auth'
@@ -39,7 +39,7 @@ interface AuthFormProps {
  * Odwzorowuje prototyp v2 (Auth.dc.html / DesktopAuth.dc.html).
  */
 export function AuthForm({ defaultMode = 'login', onSuccess, className }: AuthFormProps) {
-  const { login, register } = useAuth()
+  const { login, register, sessionExpired } = useAuth()
 
   const [mode, setMode] = useState<AuthMode>(defaultMode)
   const [email, setEmail] = useState('')
@@ -163,6 +163,17 @@ export function AuthForm({ defaultMode = 'login', onSuccess, className }: AuthFo
         )}
 
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5">
+          {sessionExpired && mode === 'login' && (
+            <output className="flex items-start gap-2.5 rounded-control bg-support-soft px-3.5 py-3">
+              <Lock size={20} className="mt-px shrink-0 text-support" aria-hidden="true" />
+              <div className="flex flex-col gap-0.5 text-support-text">
+                <span className="text-ui font-semibold">Sesja wygasła</span>
+                <span className="text-small leading-[1.45] opacity-90">
+                  Zaloguj się ponownie, a wrócisz do swoich celów.
+                </span>
+              </div>
+            </output>
+          )}
           <TextField
             label="E-mail"
             type="email"

@@ -15,7 +15,7 @@ export function EmptyGoalsState({ alias, onAddGoal, onExplore }: EmptyGoalsState
   const initials = initialsFromAlias(alias)
 
   return (
-    <Card className="max-w-[520px] mx-auto w-full p-6 sm:p-7 flex flex-col gap-4.5">
+    <Card className="max-w-[570px] mx-auto w-full p-6 lg:p-7 flex flex-col gap-4.5">
       <div className="size-14 rounded-panel bg-accent-soft text-accent flex items-center justify-center shrink-0">
         <Target size={28} aria-hidden="true" />
       </div>
@@ -32,7 +32,7 @@ export function EmptyGoalsState({ alias, onAddGoal, onExplore }: EmptyGoalsState
         </p>
       </div>
 
-      <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-panel bg-surface-2">
+      <div className="flex items-center gap-3 p-3.5 lg:p-4 rounded-panel bg-surface-2">
         <div className="size-11 rounded-control bg-accent-soft text-accent flex items-center justify-center font-bold text-ui shrink-0">
           {initials}
         </div>
@@ -59,13 +59,16 @@ export function EmptyGoalsState({ alias, onAddGoal, onExplore }: EmptyGoalsState
         >
           Dodaj pierwszy cel
         </Button>
-        <button
-          type="button"
-          onClick={onExplore}
-          className="self-center py-2.5 px-3 text-ui font-semibold text-accent-light hover:text-accent-lighter transition cursor-pointer"
-        >
-          Najpierw się rozejrzę
-        </button>
+        {/* Link prowadzi do Społeczności; zanim powstanie, nie pokazujemy martwego przycisku. */}
+        {onExplore && (
+          <button
+            type="button"
+            onClick={onExplore}
+            className="self-center py-2.5 px-3 text-ui font-semibold text-accent-light hover:text-accent-lighter transition cursor-pointer"
+          >
+            Najpierw się rozejrzę
+          </button>
+        )}
       </div>
     </Card>
   )

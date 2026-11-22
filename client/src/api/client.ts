@@ -69,7 +69,8 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   const data: unknown = isJson ? await response.json() : await response.text()
 
   if (!response.ok) {
-    if (response.status === 401) {
+    // 401 z /api/auth/* (złe hasło, brak sesji przy starcie) to nie wygaśnięcie sesji.
+    if (response.status === 401 && !path.startsWith('/api/auth/')) {
       unauthorizedHandler?.()
     }
 
