@@ -1,4 +1,4 @@
-import { useState, useMemo, type FormEvent } from 'react'
+import { useState, useMemo, useRef, type FormEvent } from 'react'
 import { AlertTriangle, Calendar, Check, Flame, Globe, Loader2, Lock, Target } from 'lucide-react'
 import { Button, TextField, TextArea, cn } from '../ui'
 import {
@@ -14,6 +14,25 @@ import { ApiError } from '../../api/client'
 const TITLE_MAX_LENGTH = 100
 const DESCRIPTION_MAX_LENGTH = 1000
 const MAX_TARGET_YEARS = 5
+
+/** Kolejność pól w formularzu i selektory do ustawienia fokusu po błędzie walidacji. */
+const FIELD_ORDER = [
+  'title',
+  'description',
+  'category',
+  'type',
+  'targetValue',
+  'targetDate',
+] as const satisfies ReadonlyArray<keyof FieldErrors>
+
+const FIELD_SELECTORS: Record<(typeof FIELD_ORDER)[number], string> = {
+  title: '#sg-gname',
+  description: '#sg-gdesc',
+  category: 'input[name="category"]',
+  type: 'input[name="goalType"]',
+  targetValue: '#sg-gtarget',
+  targetDate: '#sg-gdate',
+}
 
 const CATEGORIES: GoalCategory[] = ['nalog', 'finanse', 'sport', 'kariera', 'zdrowie', 'inne']
 
@@ -106,7 +125,18 @@ export function AddGoalForm({
     onSubmittingChange?.(value)
   }
 
-  const validate = (): boolean => {
+  const formRef = useRef<HTMLFormElement>(null)
+
+  /** Po nieudanej walidacji przenosi fokus na pierwsze błędne pole (na telefonie komunikat bywa poza ekranem). */
+  const focusFirstError = (fieldErrors: FieldErrors) => {
+    const firstKey = FIELD_ORDER.find((key) => fieldErrors[key])
+    if (!firstKey) return
+    const el = formRef.current?.querySelector<HTMLElement>(FIELD_SELECTORS[firstKey])
+    el?.focus({ preventScroll: true })
+    el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }
+
+  const validate = (): FieldErrors => {
     const newErrors: FieldErrors = {}
     const trimmedTitle = title.trim()
 
@@ -162,14 +192,16 @@ export function AddGoalForm({
     }
 
     setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return newErrors
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setFormError(null)
 
-    if (!validate()) {
+    const validationErrors = validate()
+    if (Object.values(validationErrors).some(Boolean)) {
+      focusFirstError(validationErrors)
       return
     }
 
@@ -264,7 +296,7 @@ export function AddGoalForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className={className}>
+    <form ref={formRef} onSubmit={handleSubmit} noValidate className={className}>
       <div className="flex flex-col gap-4.5">
         {formError && (
           <div
@@ -331,7 +363,7 @@ export function AddGoalForm({
         />
 
         {/* Kategoria */}
-        <fieldset aria-label="Kategoria" className="flex flex-col gap-2 border-none p-0 m-0">
+        <fieldset className="flex flex-col gap-2 border-none p-0 m-0">
           <legend className="text-small font-semibold text-text-secondary">Kategoria</legend>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((catKey) => {
@@ -370,7 +402,7 @@ export function AddGoalForm({
         </fieldset>
 
         {/* Typ celu */}
-        <fieldset aria-label="Typ celu" className="flex flex-col gap-2 border-none p-0 m-0">
+        <fieldset className="flex flex-col gap-2 border-none p-0 m-0">
           <legend className="text-small font-semibold text-text-secondary">Typ celu</legend>
           <div className="flex flex-col gap-2">
             {GOAL_TYPES.map(({ id: tKey, title: tTitle, desc: tDesc, icon: IconComponent }) => {
@@ -378,9 +410,9 @@ export function AddGoalForm({
               return (
                 <label
                   key={tKey}
-                  aria-label={tTitle}
+                  aria-labelledby={`sg-gtype-${tKey}-title`}
                   className={cn(
-                    'flex w-full items-start gap-3 rounded-tile border p-3 sm:p-3.5 text-left text-text transition cursor-pointer',
+                    'flex w-full items-start gap-3 rounded-tile border p-3 lg:p-3.5 text-left text-text transition cursor-pointer',
                     isSelected
                       ? 'border-accent bg-accent-subtle'
                       : 'border-border bg-surface hover:border-border-strong',
@@ -392,6 +424,8 @@ export function AddGoalForm({
                     name="goalType"
                     value={tKey}
                     checked={isSelected}
+                    aria-labelledby={`sg-gtype-${tKey}-title`}
+                    aria-describedby={`sg-gtype-${tKey}-desc`}
                     onChange={() => {
                       setType(tKey)
                       if (errors.type) {
@@ -418,9 +452,14 @@ export function AddGoalForm({
                       <span className={isSelected ? 'text-accent' : 'text-muted'}>
                         <IconComponent size={18} aria-hidden="true" />
                       </span>
-                      {tTitle}
+                      <span id={`sg-gtype-${tKey}-title`}>{tTitle}</span>
                     </span>
-                    <span className="text-small leading-snug text-muted">{tDesc}</span>
+                    <span
+                      id={`sg-gtype-${tKey}-desc`}
+                      className="text-small leading-snug text-muted"
+                    >
+                      {tDesc}
+                    </span>
                   </span>
                 </label>
               )
@@ -434,9 +473,9 @@ export function AddGoalForm({
           <TextField
             label="Kwota docelowa (zł)"
             id="sg-gtarget"
-            type="number"
-            min="0.01"
-            step="any"
+            type="text"
+            inputMode="decimal"
+            autoComplete="off"
             placeholder="Np. 8000"
             value={targetValue}
             onChange={(e) => {
@@ -492,13 +531,13 @@ export function AddGoalForm({
         />
 
         {/* Widoczność (dwa kafelki z prototypu v2) */}
-        <fieldset aria-label="Widoczność" className="flex flex-col gap-2 border-none p-0 m-0">
+        <fieldset className="flex flex-col gap-2 border-none p-0 m-0">
           <legend className="text-small font-semibold text-text-secondary">Widoczność</legend>
           <div className="flex flex-col gap-2">
             <label
-              aria-label="Publiczny"
+              aria-labelledby="sg-gvis-public-title"
               className={cn(
-                'flex w-full items-start gap-3 rounded-tile border p-3 sm:p-3.5 text-left text-text transition cursor-pointer',
+                'flex w-full items-start gap-3 rounded-tile border p-3 lg:p-3.5 text-left text-text transition cursor-pointer',
                 visibility === 'public'
                   ? 'border-accent bg-accent-subtle'
                   : 'border-border bg-surface hover:border-border-strong',
@@ -510,6 +549,8 @@ export function AddGoalForm({
                 name="visibility"
                 value="public"
                 checked={visibility === 'public'}
+                aria-labelledby="sg-gvis-public-title"
+                aria-describedby="sg-gvis-public-desc"
                 onChange={() => {
                   setVisibility('public')
                   if (errors.isPublic) {
@@ -533,18 +574,18 @@ export function AddGoalForm({
                   <span className={visibility === 'public' ? 'text-accent' : 'text-muted'}>
                     <Globe size={18} aria-hidden="true" />
                   </span>
-                  Publiczny
+                  <span id="sg-gvis-public-title">Publiczny</span>
                 </span>
-                <span className="text-small leading-snug text-muted">
+                <span id="sg-gvis-public-desc" className="text-small leading-snug text-muted">
                   Cel stanie się postem w Społeczności. Inni zobaczą tylko Twój alias.
                 </span>
               </span>
             </label>
 
             <label
-              aria-label="Prywatny"
+              aria-labelledby="sg-gvis-private-title"
               className={cn(
-                'flex w-full items-start gap-3 rounded-tile border p-3 sm:p-3.5 text-left text-text transition cursor-pointer',
+                'flex w-full items-start gap-3 rounded-tile border p-3 lg:p-3.5 text-left text-text transition cursor-pointer',
                 visibility === 'private'
                   ? 'border-accent bg-accent-subtle'
                   : 'border-border bg-surface hover:border-border-strong',
@@ -556,6 +597,8 @@ export function AddGoalForm({
                 name="visibility"
                 value="private"
                 checked={visibility === 'private'}
+                aria-labelledby="sg-gvis-private-title"
+                aria-describedby="sg-gvis-private-desc"
                 onChange={() => {
                   setVisibility('private')
                   if (errors.isPublic) {
@@ -579,9 +622,9 @@ export function AddGoalForm({
                   <span className={visibility === 'private' ? 'text-accent' : 'text-muted'}>
                     <Lock size={18} aria-hidden="true" />
                   </span>
-                  Prywatny
+                  <span id="sg-gvis-private-title">Prywatny</span>
                 </span>
-                <span className="text-small leading-snug text-muted">
+                <span id="sg-gvis-private-desc" className="text-small leading-snug text-muted">
                   Widzisz go tylko Ty. Możesz go upublicznić później.
                 </span>
               </span>

@@ -33,6 +33,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
   const [sessionError, setSessionError] = useState<string | null>(null)
+  const [sessionExpired, setSessionExpired] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,6 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     setOnUnauthorized(() => {
       setUser(null)
+      setSessionExpired(true)
     })
     return () => {
       setOnUnauthorized(null)
@@ -123,6 +125,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const loggedInUser = await apiLogin(credentials)
       setUser(loggedInUser)
+      setSessionExpired(false)
       setSessionError(null)
       return loggedInUser
     } catch (err: unknown) {
@@ -137,6 +140,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const registeredUser = await apiRegister(credentials)
       setUser(registeredUser)
+      setSessionExpired(false)
       setSessionError(null)
       return registeredUser
     } catch (err: unknown) {
@@ -159,6 +163,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setUser(null)
       setError(null)
+      setSessionExpired(false)
       setLoggingOut(false)
     }
   }, [loggingOut])
@@ -167,6 +172,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     loading,
     sessionError,
+    sessionExpired,
     loggingOut,
     error,
     login,

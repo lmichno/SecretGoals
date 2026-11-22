@@ -1,9 +1,12 @@
 import { AlertTriangle, RotateCcw } from 'lucide-react'
+import { Navigate, Route, Routes } from 'react-router'
 import { Button, Card, IconTile } from './components/ui'
+import { AppLayout } from './components/layout/AppLayout'
 import { AuthProvider } from './context/AuthProvider'
 import { useAuth } from './hooks/useAuth'
 import { AuthPage } from './pages/AuthPage'
 import { GoalsPage } from './pages/GoalsPage'
+import { ProfilePage } from './pages/ProfilePage'
 
 function AppContent() {
   const { user, loading: authLoading, sessionError, retrySessionCheck } = useAuth()
@@ -43,11 +46,20 @@ function AppContent() {
     )
   }
 
+  // Niezalogowany użytkownik widzi logowanie pod każdym adresem; po zalogowaniu zostaje na tym samym URL.
   if (!user) {
     return <AuthPage />
   }
 
-  return <GoalsPage />
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route path="/cele" element={<GoalsPage />} />
+        <Route path="/profil" element={<ProfilePage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/cele" replace />} />
+    </Routes>
+  )
 }
 
 export default function App() {

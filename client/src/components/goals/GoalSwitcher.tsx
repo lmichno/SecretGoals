@@ -35,7 +35,7 @@ export function GoalSwitcher({
   return (
     <nav
       aria-label="Twoje cele"
-      className="scrollbar-none flex min-w-0 items-center gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible py-0.5"
+      className="scrollbar-none flex min-w-0 items-center gap-2 overflow-x-auto py-0.5 lg:flex-wrap lg:overflow-visible"
     >
       {goals.map((g) => (
         <GoalPill
@@ -45,16 +45,16 @@ export function GoalSwitcher({
           onClick={() => onSelectGoal(g.id)}
           title={g.title}
         >
-          <span className="max-w-[140px] truncate sm:max-w-[200px]">{g.title}</span>
+          <span className="max-w-[140px] truncate lg:max-w-[200px]">{g.title}</span>
         </GoalPill>
       ))}
 
-      {/* Przycisk „+” na mobile na końcu przewijanego paska */}
+      {/* „+” na końcu przewijanego paska (mobile); na desktopie jest „Nowy cel” przy tytule */}
       <button
         type="button"
         aria-label="Dodaj nowy cel"
         onClick={onAddGoal}
-        className="flex size-11 shrink-0 items-center justify-center rounded-control border border-dashed border-border-strong bg-transparent text-muted hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent cursor-pointer transition sm:hidden"
+        className="flex size-11 shrink-0 items-center justify-center rounded-control border border-dashed border-border-strong bg-transparent text-muted hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent cursor-pointer transition lg:hidden"
       >
         <Plus size={18} aria-hidden="true" />
       </button>
